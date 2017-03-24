@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="iconSize">36dp</dimen>
+    <dimen name="tabIconSize">48dp</dimen>
+    <dimen name="iconSizeLayout">48dp</dimen>
+    <dimen name="marginMaterial">8dp</dimen>
+    <dimen name="rightMarginForButtons">60dp</dimen>
+    <dimen name="spacing_xlarge">10dp</dimen>
+</resources>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.komdosh.yandextestapp.ui.fragments.TranslationFragment">
+
+    <include
+        layout="@layout/toolbar_activity_main"
+        android:id="@+id/toolbar"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+
+    <TextView
+        android:id="@+id/yandexAd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginMaterial"
+        android:layout_marginLeft="@dimen/marginMaterial"
+        android:layout_marginStart="@dimen/marginMaterial"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/yandexAd"
+        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+        />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/editTranslate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yandexAd"
+        android:layout_margin="@dimen/marginMaterial"
+        android:background="@drawable/rectangle"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1">
+
+        <EditText
+            android:id="@+id/textToTranslate"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="@dimen/marginMaterial"
+            android:layout_marginStart="@dimen/marginMaterial"
+            android:layout_marginTop="@dimen/marginMaterial"
+            android:layout_marginRight="@dimen/rightMarginForButtons"
+            android:layout_marginEnd="@dimen/rightMarginForButtons"
+            android:background="@android:color/transparent"
+            android:hint="@string/translateHint"
+            android:gravity="top"
+            android:inputType="text"
+            android:imeOptions="actionDone" />
+
+        <ImageButton
+            android:id="@+id/recordText"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_mic"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="@+id/textToTranslate" />
+
+        <ImageButton
+            android:id="@+id/playEditText"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_play_sound"
+            app:layout_constraintBottom_toBottomOf="@+id/textToTranslate"
+            android:background="@android:color/transparent"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/clearText"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            app:srcCompat="@drawable/ic_clear"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/marginMaterial"
+            app:layout_constraintTop_toBottomOf="@+id/textToTranslate"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:visibility="invisible" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/translatedText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginMaterial"
+        android:layout_marginLeft="@dimen/marginMaterial"
+        android:layout_marginStart="@dimen/marginMaterial"
+        app:layout_constraintLeft_toLeftOf="@id/editTranslate"
+        app:layout_constraintTop_toBottomOf="@id/editTranslate"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:visibility="invisible"
+        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+        />
+
+    <ImageButton
+        android:id="@+id/playTranslated"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_play_sound"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@+id/editTranslate"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/favoriteIcon"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_favorite"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@+id/playTranslated"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/shareTranslate"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_share"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteIcon"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/fullScreenWord"
+        android:layout_height="48dp"
+        android:layout_width="48dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_full_screen"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@+id/shareTranslate"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/dictionaryWordLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/translatedText"
+        app:layout_constraintTop_toBottomOf="@id/translatedText"
+        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/dictionaryWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/editTranslate"
+            app:layout_constraintTop_toBottomOf="@id/editTranslate"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:visibility="invisible"
+            app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+            />
+        <TextView
+            android:id="@+id/dictionaryWordTs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/dictionaryWordLayout"
+            app:layout_constraintTop_toBottomOf="@id/dictionaryWordLayout"
+            android:layout_marginLeft="@dimen/marginMaterial"
+            android:layout_marginStart="@dimen/marginMaterial"
+            android:textStyle="bold"
+            android:textColor="@color/gray"
+            android:visibility="invisible"
+            app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/dictionaryWordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/dictionaryWordLayout"
+        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+        app:layout_constraintBottom_toTopOf="@+id/dictionaryDescription"
+        android:gravity="start"
+        android:textStyle="italic"
+        android:textColor="@color/pos"
+        android:visibility="visible"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="@dimen/marginMaterial"
+
+        android:layout_marginTop="0dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dictionaryDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/pos"
+        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+        app:layout_constraintLeft_toLeftOf="@+id/translatedText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+</android.support.constraint.ConstraintLayout>

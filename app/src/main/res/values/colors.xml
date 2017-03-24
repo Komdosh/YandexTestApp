@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFDC61</color>
+    <color name="colorPrimaryDark">#E1C255</color>
+    <color name="colorAccent">#000</color>
+
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="gray">#858E98</color>
+
+    <color name="pos">#A37D92</color>
+
+    <color name="icon_inactive">#858E98</color>
+    <color name="icon_active">#000</color>
+
+    <color name="text_inactive">#a4ffffff</color>
+    <color name="text_active">#000</color>
+
+    <color name="white_87">#DEFFFFFF</color>
+    <color name="white_54">#8AFFFFFF</color>
+</resources>
