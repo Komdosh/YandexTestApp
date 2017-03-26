@@ -17,12 +17,13 @@
 
         <ImageButton
             android:id="@+id/switchLang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/iconSizeLayout"
+            android:layout_height="@dimen/iconSizeLayout"
             android:layout_marginEnd="@dimen/marginMaterial"
             android:layout_marginLeft="@dimen/marginMaterial"
             android:layout_marginRight="@dimen/marginMaterial"
             android:layout_marginStart="@dimen/marginMaterial"
+            android:layout_marginTop="2dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/cdSwitchLang"
             app:srcCompat="@drawable/ic_compare_arrows" />

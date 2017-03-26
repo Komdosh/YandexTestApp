@@ -15,7 +15,6 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-
     <TextView
         android:id="@+id/yandexAd"
         android:layout_width="0dp"
@@ -25,7 +24,6 @@
         android:layout_marginTop="@dimen/marginMaterial"
         android:text="@string/yandexAd"
         android:textColor="@color/black"
-        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/playTranslated"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -45,10 +43,8 @@
         <EditText
             android:id="@+id/textToTranslate"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-
+            android:layout_height="@dimen/textToTranslateHeight"
             android:layout_marginLeft="@dimen/marginMaterial"
-
             android:layout_marginStart="@dimen/marginMaterial"
             android:layout_marginTop="@dimen/marginMaterial"
             android:background="@android:color/transparent"
@@ -62,30 +58,29 @@
 
         <ImageButton
             android:id="@+id/recordText"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/iconSizeLayout"
+            android:layout_height="@dimen/iconSizeLayout"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/cdRecordText"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textToTranslate"
             app:srcCompat="@drawable/ic_mic" />
 
         <ImageButton
             android:id="@+id/playEditText"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            style="@style/translateControlButton"
             android:background="@android:color/transparent"
-            android:visibility="invisible"
+            android:contentDescription="@string/cdPlayTypedText"
             app:layout_constraintBottom_toBottomOf="@+id/textToTranslate"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/ic_play_sound" />
 
         <ImageButton
             android:id="@+id/clearText"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            style="@style/translateControlButton"
             android:layout_marginTop="@dimen/marginMaterial"
             android:background="@android:color/transparent"
-            android:visibility="invisible"
+            android:contentDescription="@string/cdClearTypedText"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textToTranslate"
             app:srcCompat="@drawable/ic_clear" />
@@ -107,40 +102,36 @@
 
     <ImageButton
         android:id="@+id/playTranslated"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/translateControlButton"
         android:background="@android:color/transparent"
-        android:visibility="invisible"
+        android:contentDescription="@string/cdPlayTranslatedText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTranslate"
         app:srcCompat="@drawable/ic_play_sound" />
 
     <ImageButton
         android:id="@+id/favoriteIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/translateControlButton"
         android:background="@android:color/transparent"
-        android:visibility="invisible"
+        android:contentDescription="@string/cdMakeThisTranslateFavorite"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playTranslated"
         app:srcCompat="@drawable/ic_favorite" />
 
     <ImageButton
         android:id="@+id/shareTranslate"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/translateControlButton"
         android:background="@android:color/transparent"
-        android:visibility="invisible"
+        android:contentDescription="@string/cdShareThisTranslate"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favoriteIcon"
         app:srcCompat="@drawable/ic_share" />
 
     <ImageButton
         android:id="@+id/fullScreenWord"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/translateControlButton"
         android:background="@android:color/transparent"
-        android:visibility="invisible"
+        android:contentDescription="@string/cdShowThisTranslate"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shareTranslate"
         app:srcCompat="@drawable/ic_full_screen" />

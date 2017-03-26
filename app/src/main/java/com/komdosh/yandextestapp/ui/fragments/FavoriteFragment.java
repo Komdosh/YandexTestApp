@@ -66,7 +66,9 @@ public class FavoriteFragment extends Fragment {
 		super.setUserVisibleHint(isVisibleToUser);
 		//This need to update list right away after translate
 		if (isVisibleToUser) {
-			((HistoryFavoriteFragment) adapter.getItem(0)).updateItems();
+			for (int i = 0; i < adapter.getCount(); i++) {
+				((HistoryFavoriteFragment) adapter.getItem(i)).updateItems();
+			}
 		}
 	}
 }
