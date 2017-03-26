@@ -258,7 +258,9 @@ public class TranslationFragment extends Fragment {
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
 
-		if (cacheRequest != null && cacheRequest.getTranslateDto() != null) {
+		if (cacheRequest != null && cacheRequest.getTranslateDto() != null && !cacheRequest
+				.getTranslateDto().getText().isEmpty() && localTextToTranslate.equals(cacheRequest
+				.getTranslateDto().getText().get(0))) {
 			fillTranslate(cacheRequest.getTranslateDto(), localTextToTranslate);
 			cache.update(cacheRequest);
 			return;
@@ -290,7 +292,9 @@ public class TranslationFragment extends Fragment {
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
 
-		if (cacheRequest != null && cacheRequest.getDictionaryDto() != null) {
+		if (cacheRequest != null && cacheRequest.getDictionaryDto() != null && !cacheRequest
+				.getDictionaryDto().getDef().isEmpty()) {
+			Log.d("CACHE", cacheRequest.getDictionaryDto().toString());
 			fillDictionary(cacheRequest.getDictionaryDto());
 			cache.update(cacheRequest);
 			return;

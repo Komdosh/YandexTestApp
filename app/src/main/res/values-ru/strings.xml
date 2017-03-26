@@ -23,4 +23,16 @@
     <string name="yandexAd">Данное приложение использует API Яндекс переводчика и словаря</string>
     <string name="Yandex_Translate_API">trnsl.1.1.20170319T151758Z.8272e770a532510f.5cded39f7b636d544c6c22f088236bdc6d9bc5f3</string>
     <string name="Yandex_Dictionary_API">dict.1.1.20170319T171957Z.017b9e0b4c483489.159e559a0265543bb06e84a967aff5c1d400c87e</string>
+
+    <!--Content description for ImageButtons-->
+    <string name="cdSwitchLang">Поменять язык</string>
+    <string name="cdFavorite">Избранные</string>
+    <string name="cdClose">Закрыть</string>
+    <string name="cdRecordText">Записать текст на микрофон</string>
+    <string name="cdPlayTypedText">Воспроизвести введённый текст</string>
+    <string name="cdClearTypedText">Очистить введённый текст</string>
+    <string name="cdPlayTranslatedText">Воспроизвести переведённый текст</string>
+    <string name="cdMakeThisTranslateFavorite">Добавить перевод в закладки</string>
+    <string name="cdShareThisTranslate">Поделиться перводом</string>
+    <string name="cdShowThisTranslate">Показать только перевод</string>
 </resources>
