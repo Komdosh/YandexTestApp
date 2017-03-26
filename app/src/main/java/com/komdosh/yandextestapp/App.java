@@ -2,8 +2,8 @@ package com.komdosh.yandextestapp;
 
 import android.app.Application;
 
-import com.komdosh.yandextestapp.data.model.DaoMaster;
-import com.komdosh.yandextestapp.data.model.DaoSession;
+import com.komdosh.yandextestapp.data.model.entity.DaoMaster;
+import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 

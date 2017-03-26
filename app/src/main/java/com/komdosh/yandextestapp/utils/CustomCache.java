@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.komdosh.yandextestapp.data.dto.DictionaryDto;
 import com.komdosh.yandextestapp.data.dto.TranslateDto;
-import com.komdosh.yandextestapp.data.model.CacheRequest;
-import com.komdosh.yandextestapp.data.model.CacheRequestDao;
-import com.komdosh.yandextestapp.data.model.DaoSession;
+import com.komdosh.yandextestapp.data.model.entity.CacheRequest;
+import com.komdosh.yandextestapp.data.model.entity.CacheRequestDao;
+import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

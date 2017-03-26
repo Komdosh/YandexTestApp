@@ -1,4 +1,4 @@
-package com.komdosh.yandextestapp.data.model;
+package com.komdosh.yandextestapp.data.model.entity;
 
 import com.komdosh.yandextestapp.data.dto.DictionaryDto;
 import com.komdosh.yandextestapp.data.dto.TranslateDto;

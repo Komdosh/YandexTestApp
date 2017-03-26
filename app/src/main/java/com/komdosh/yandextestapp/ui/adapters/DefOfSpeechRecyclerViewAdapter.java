@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.komdosh.yandextestapp.App;
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.DicTranslatedDto;
-import com.komdosh.yandextestapp.data.model.DaoSession;
+import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import java.util.List;
 

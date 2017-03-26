@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.komdosh.yandextestapp.App;
 import com.komdosh.yandextestapp.R;
-import com.komdosh.yandextestapp.data.model.DaoSession;
-import com.komdosh.yandextestapp.data.model.History;
+import com.komdosh.yandextestapp.data.model.entity.DaoSession;
+import com.komdosh.yandextestapp.data.model.entity.History;
 import com.komdosh.yandextestapp.states.HistoryState;
 import com.komdosh.yandextestapp.ui.fragments.TranslationFragment;
 

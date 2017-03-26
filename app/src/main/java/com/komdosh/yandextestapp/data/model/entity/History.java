@@ -1,5 +1,6 @@
-package com.komdosh.yandextestapp.data.model;
+package com.komdosh.yandextestapp.data.model.entity;
 
+import com.komdosh.yandextestapp.data.model.Lang;
 import com.komdosh.yandextestapp.data.model.converters.LangConverter;
 
 import org.greenrobot.greendao.annotation.Convert;
