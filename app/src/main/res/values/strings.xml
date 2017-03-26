@@ -14,7 +14,7 @@
 
     <string name="unexpectedError">There is an unexpected error</string>
     <string name="networkProblem">Check your network</string>
-    <string name="thisSectionInDevelop">This section in develop</string>
+    <string name="thisSectionInDevelop">This section is under development</string>
 
     <string name="thisButtonIsNotImplementedYet">This button is not implemented yet</string>
 

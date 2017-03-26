@@ -19,16 +19,12 @@ public class SettingsFragment extends Fragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 		ButterKnife.bind(this, rootView);
+
 		return rootView;
 	}
 }

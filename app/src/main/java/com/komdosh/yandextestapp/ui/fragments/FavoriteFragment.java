@@ -30,7 +30,6 @@ public class FavoriteFragment extends Fragment {
 
 	HistoryViewPagerFragmentAdapter adapter;
 
-
 	public FavoriteFragment() {
 		// Required empty public constructor
 	}
@@ -41,9 +40,10 @@ public class FavoriteFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
 		ButterKnife.bind(this, rootView);
-		setupViewPager(viewPager);
 
+		setupViewPager(viewPager);
 		tabLayout.setupWithViewPager(viewPager);
+
 		return rootView;
 	}
 
@@ -64,6 +64,7 @@ public class FavoriteFragment extends Fragment {
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
+		//This need to update list right away after translate
 		if (isVisibleToUser) {
 			((HistoryFavoriteFragment) adapter.getItem(0)).updateItems();
 		}

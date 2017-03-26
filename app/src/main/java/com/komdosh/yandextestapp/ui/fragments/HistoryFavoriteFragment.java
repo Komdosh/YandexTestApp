@@ -34,7 +34,6 @@ public class HistoryFavoriteFragment extends Fragment {
 	public static final int FAVORITE = 1;
 	private static final String TAG = "HistoryFavoriteFragment";
 	List<History> histories;
-	private int type;
 	private RecyclerView recyclerView;
 	private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
 	private DaoSession daoSession;
@@ -45,18 +44,25 @@ public class HistoryFavoriteFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 		daoSession = ((App) getActivity().getApplication()).getDaoSession();
 		View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 		recyclerView = (RecyclerView) rootView.findViewById(R.id.historyRecyclerView);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(loadListOfItem(), getActivity());
-		recyclerView.setAdapter(historyRecyclerViewAdapter);
-		historyRecyclerViewAdapter.notifyDataSetChanged();
-		registerForContextMenu(recyclerView);
+
+		setupRecyclerView();
+
 		return rootView;
 	}
 
-	public List<History> loadListOfItem() {
+	private void setupRecyclerView() {
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+		historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(loadListOfItem(), getActivity());
+		recyclerView.setAdapter(historyRecyclerViewAdapter);
+		historyRecyclerViewAdapter.notifyDataSetChanged();
+	}
+
+	private List<History> loadListOfItem() {
 		if (histories == null) {
 			histories = new ArrayList<>();
 		} else {
@@ -67,9 +73,9 @@ public class HistoryFavoriteFragment extends Fragment {
 				.queryBuilder()
 				.orderDesc(HistoryDao.Properties.Date);
 
+		//We can simplify the code below but it need if we want to expand functionality
 		if (getArguments() != null && getArguments().containsKey(TYPE_KEY)) {
-			type = getArguments().getInt(TYPE_KEY);
-			switch (type) {
+			switch (getArguments().getInt(TYPE_KEY)) {
 				case FAVORITE:
 					histories.addAll(historiesQueryWithDateOrder.where(HistoryDao.Properties.Favorite.eq(true)).list());
 					break;
@@ -78,9 +84,9 @@ public class HistoryFavoriteFragment extends Fragment {
 					histories.addAll(historiesQueryWithDateOrder.list());
 			}
 		} else {
-			type = HISTORY;
 			histories.addAll(historiesQueryWithDateOrder.list());
 		}
+
 		return histories;
 	}
 
