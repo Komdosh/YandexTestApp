@@ -12,6 +12,7 @@
         android:layout_height="@dimen/iconSizeLayout"
         android:layout_marginTop="@dimen/marginMaterial"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/cdClose"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_clear" />

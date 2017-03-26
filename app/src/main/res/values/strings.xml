@@ -26,5 +26,6 @@
     <!--Content description-->
     <string name="cdSwitchLang">Switch lang</string>
     <string name="cdFavorite">Favorite</string>
+    <string name="cdClose">Close</string>
 
 </resources>
