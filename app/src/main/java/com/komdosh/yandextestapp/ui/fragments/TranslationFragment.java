@@ -249,6 +249,7 @@ public class TranslationFragment extends Fragment {
 
 		if (cacheRequest != null) {
 			fillTranslate(cacheRequest.getTranslateDto(), localTextToTranslate);
+			cache.update(cacheRequest);
 			return;
 		}
 
@@ -299,7 +300,6 @@ public class TranslationFragment extends Fragment {
 	}
 
 	private void fillDictionary(DictionaryDto dictionaryDto) {
-		Log.d("dictionaryDto", dictionaryDto.toString());
 		if (!dictionaryDto.getDef().isEmpty()) {
 			dictionaryList.clear();
 			dictionaryList.addAll(dictionaryDto.getDef());
@@ -334,6 +334,7 @@ public class TranslationFragment extends Fragment {
 
 		if (cacheRequest != null) {
 			fillDictionary(cacheRequest.getDictionaryDto());
+			cache.update(cacheRequest);
 			return;
 		}
 

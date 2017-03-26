@@ -1,7 +1,5 @@
 package com.komdosh.yandextestapp.utils;
 
-import android.util.Log;
-
 import com.komdosh.yandextestapp.data.dto.DictionaryDto;
 import com.komdosh.yandextestapp.data.dto.TranslateDto;
 import com.komdosh.yandextestapp.data.model.entity.CacheRequest;
@@ -37,13 +35,6 @@ public class CustomCache {
 				cacheRequest.setDictionaryDto(dictionaryDto);
 			}
 		}
-/*		if(!cacheRequestDao.queryBuilder().where(CacheRequestDao.Properties.TextToTranslate.eq
-				(translateDto))
-				.list().isEmpty()){
-			cacheRequestDao.update(cacheRequest);
-		} else {
-			cacheRequestDao.insert(cacheRequest);
-		}*/
 
 		cacheRequestDao.insertOrReplace(cacheRequest);
 	}
@@ -58,10 +49,8 @@ public class CustomCache {
 	}
 
 	public void invalidateOld() {
-		Log.d("Invalidate", cacheRequestDao.queryBuilder().where(CacheRequestDao.Properties.Date.le(new
-				Date().getTime() - TimeUnit.MINUTES.toMillis(2))).list().toString());
 		cacheRequestDao.queryBuilder().where(CacheRequestDao.Properties.Date.le(new
-				Date().getTime() - TimeUnit.HOURS.toMillis(1))).buildDelete()
+				Date().getTime() - TimeUnit.HOURS.toMillis(2))).buildDelete()
 				.executeDeleteWithoutDetachingEntities();
 	}
 }

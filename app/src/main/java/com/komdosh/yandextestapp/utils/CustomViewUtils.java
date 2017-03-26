@@ -27,8 +27,4 @@ public class CustomViewUtils {
 			v.setVisibility(visibility);
 		}
 	}
-
-	public static void createDictionaryItem() {
-
-	}
 }
