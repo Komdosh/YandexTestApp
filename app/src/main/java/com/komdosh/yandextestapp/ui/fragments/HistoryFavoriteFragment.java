@@ -64,8 +64,8 @@ public class HistoryFavoriteFragment extends Fragment {
 		}
 
 		QueryBuilder<History> historiesQueryWithDateOrder = daoSession.getHistoryDao()
-																														.queryBuilder()
-																														.orderDesc(HistoryDao.Properties.Date);
+				.queryBuilder()
+				.orderDesc(HistoryDao.Properties.Date);
 
 		if (getArguments() != null && getArguments().containsKey(TYPE_KEY)) {
 			type = getArguments().getInt(TYPE_KEY);

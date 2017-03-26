@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/numberOfPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/syn" />
+
+    <TextView
+        android:id="@+id/syn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/synWords"
+        app:layout_constraintLeft_toRightOf="@id/numberOfPos" />
+
+    <TextView
+        android:id="@+id/mean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/meanWords"
+        app:layout_constraintLeft_toRightOf="@id/numberOfPos"
+        app:layout_constraintTop_toBottomOf="@id/syn" />
+
+    <TextView
+        android:id="@+id/ex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginMaterial"
+        android:layout_marginStart="@dimen/marginMaterial"
+        android:textColor="@color/exampleText"
+        app:layout_constraintLeft_toRightOf="@id/numberOfPos"
+        app:layout_constraintTop_toBottomOf="@id/mean" />
+</android.support.constraint.ConstraintLayout>

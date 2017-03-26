@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.ui.adapters.MainViewPagerFragmentAdapter;
@@ -55,12 +57,34 @@ public class MainActivity extends AppCompatActivity {
 		for (int i = 0; i < tabIcons.length; i++) {
 			tabLayout.getTabAt(i).setIcon(tabIcons[i]);
 		}
+
+		//TODO (AT): remove when settings will be implemented
+		LinearLayout tabStrip = (LinearLayout) tabLayout.getChildAt(0);
+		tabStrip.getChildAt(2).setOnTouchListener(new View
+				.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				showToastDisabledTab();
+				return true;
+			}
+		});
+	}
+
+	private void showToastDisabledTab() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(MainActivity.this, getString(R.string.thisSectionInDevelop), Toast.LENGTH_SHORT)
+						.show();
+			}
+		});
 	}
 
 	private void setupViewPager(ViewPager viewPager) {
 		MainViewPagerFragmentAdapter adapter = new MainViewPagerFragmentAdapter(getSupportFragmentManager());
 		adapter.addFragment(new TranslationFragment());
 		adapter.addFragment(new FavoriteFragment());
+		//This fragment disabled while settings not implemented
 		adapter.addFragment(new SettingsFragment());
 		viewPager.setAdapter(adapter);
 	}

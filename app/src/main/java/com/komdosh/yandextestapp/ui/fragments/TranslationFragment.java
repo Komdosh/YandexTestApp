@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.DefinitionDto;
 import com.komdosh.yandextestapp.data.dto.DictionaryDto;
 import com.komdosh.yandextestapp.data.dto.TranslateDto;
+import com.komdosh.yandextestapp.data.model.CacheRequest;
 import com.komdosh.yandextestapp.data.model.DaoSession;
 import com.komdosh.yandextestapp.data.model.History;
 import com.komdosh.yandextestapp.data.model.HistoryDao;
@@ -35,8 +39,11 @@ import com.komdosh.yandextestapp.states.HistoryState;
 import com.komdosh.yandextestapp.states.LangState;
 import com.komdosh.yandextestapp.ui.activities.ChooseLangActivity;
 import com.komdosh.yandextestapp.ui.activities.WordActivity;
-import com.komdosh.yandextestapp.utils.ViewListUtils;
+import com.komdosh.yandextestapp.ui.adapters.DictionaryRecyclerViewAdapter;
+import com.komdosh.yandextestapp.utils.CustomCache;
+import com.komdosh.yandextestapp.utils.CustomViewUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.komdosh.yandextestapp.utils.ViewUtils.hideSoftKeyboard;
+import static com.komdosh.yandextestapp.utils.CustomViewUtils.hideSoftKeyboard;
 
 /**
  * @author komdosh
@@ -84,15 +91,15 @@ public class TranslationFragment extends Fragment {
 	@BindView(R.id.favoriteIcon)
 	ImageView favoriteIcon;
 
-	@BindView(R.id.pos)
-	TextView pos;
+	@BindView(R.id.dictionaryLayout)
+	LinearLayout dictionaryLayout;
+
+	@BindView(R.id.dictionaryRecyclerView)
+	RecyclerView dictionaryRecyclerView;
 
 	@BindViews({R.id.playTranslated, R.id.favoriteIcon, R.id.shareTranslate, R.id.fullScreenWord,
 			R.id.translatedText, R.id.dictionaryDescription, R.id.clearText, R.id.playEditText})
 	List<View> translateControl;
-
-	@BindViews({R.id.dictionaryDescription, R.id.dictionaryWord, R.id.dictionaryWordTs, R.id.pos})
-	List<View> dictionaryViews;
 
 	LangState langState = LangState.getInstance();
 
@@ -101,6 +108,12 @@ public class TranslationFragment extends Fragment {
 	History history;
 
 	HistoryState historyState;
+
+	DictionaryRecyclerViewAdapter dictionaryRecyclerViewAdapter;
+
+	List<DefinitionDto> dictionaryList;
+
+	CustomCache cache;
 
 	public TranslationFragment() {
 		// Required empty public constructor
@@ -117,8 +130,11 @@ public class TranslationFragment extends Fragment {
 
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 		historyState = HistoryState.getInstance();
+		cache = new CustomCache(daoSession);
+		cache.invalidateOld();
 		setupEditText();
 		setTextViewLangsFromState();
+		setupDictionaryRv();
 		return rootView;
 	}
 
@@ -131,7 +147,7 @@ public class TranslationFragment extends Fragment {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 
 					if (textToTranslate.getText().toString().matches("")) {
-						ViewListUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+						CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 					} else {
 						translate();
 					}
@@ -152,7 +168,7 @@ public class TranslationFragment extends Fragment {
 		this.history = history;
 		textToTranslate.setText(history.getText());
 		translatedText.setText(history.getTranslatedText());
-		ViewListUtils.setVisibilityToList(translateControl, View.VISIBLE);
+		CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
 
 		langState.setSourceLang(history.getSourceLang());
 		langState.setTargetLang(history.getTargetLang());
@@ -199,36 +215,41 @@ public class TranslationFragment extends Fragment {
 	public void clearText() {
 		textToTranslate.setText("");
 		hideSoftKeyboard(getActivity(), textToTranslate);
-		ViewListUtils.setVisibilityToList(translateControl, View.INVISIBLE);
-		ViewListUtils.setVisibilityToList(dictionaryViews, View.INVISIBLE);
+		CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+		dictionaryLayout.setVisibility(View.INVISIBLE);
 	}
 
 	/*	@OnTextChanged(R.id.textToTranslate)
 	public void editTextChanged() {
 		if (textToTranslate.getText().toString().matches("")) {
-			ViewListUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+			CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 		} else {
 			if (translateControl.get(0).getVisibility() != View.VISIBLE) {
-				ViewListUtils.setVisibilityToList(translateControl, View.VISIBLE);
+				CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
 			}
 			translate();
 			dictionary();
 		}
 	}*/
 
-
 	public void translate() {
 		if (TextUtils.isEmpty(textToTranslate.getText())) {
 			return;
 		}
 
-
 		final String localTextToTranslate = textToTranslate.getText().toString();
 
-		if(localTextToTranslate.split(" ").length == 1) {
+		if (localTextToTranslate.split(" ").length == 1) {
 			dictionary();
 		} else {
-			ViewListUtils.setVisibilityToList(dictionaryViews, View.VISIBLE);
+			dictionaryLayout.setVisibility(View.VISIBLE);
+		}
+
+		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
+
+		if (cacheRequest != null) {
+			fillTranslate(cacheRequest.getTranslateDto(), localTextToTranslate);
+			return;
 		}
 
 		TranslateAPI apiService = TranslateAPIClient.getClient().create(TranslateAPI.class);
@@ -237,75 +258,104 @@ public class TranslationFragment extends Fragment {
 					@Override
 					public void onResponse(Call<TranslateDto> call, Response<TranslateDto> response) {
 						if (response.body() != null) {
-							TranslateDto translateDto = response.body();
-							if (!translateDto.getText().isEmpty() && translateDto.getText().get(0).length() > 1) {
-								ViewListUtils.setVisibilityToList(translateControl, View.VISIBLE);
-								translatedText.setText(translateDto.getText().get(0));
-								HistoryDao historyDao = daoSession.getHistoryDao();
-								history = historyDao.queryBuilder()
-										.where(HistoryDao.Properties.Text.eq(localTextToTranslate),
-												HistoryDao.Properties.SourceLang.eq(new Gson().toJson(langState.getSourceLang())))
-										.unique();
-								if (history == null) {
-									history = new History(null, localTextToTranslate, translateDto.getText().get(0),
-											langState.getTargetLang(), langState.getSourceLang(), false, new Date());
-									favoriteIcon.setImageResource(R.drawable.ic_favorite);
-									historyDao.save(history);
-								} else {
-									favoriteIcon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
-									history.setDate(new Date());
-									historyDao.update(history);
-								}
-								historyState.setState(1);
-							} else {
-								ViewListUtils.setVisibilityToList(translateControl, View.INVISIBLE);
-							}
+							fillTranslate(response.body(), localTextToTranslate);
+							cache.addOrUpdate(localTextToTranslate, langState.getLangDir(), response.body(), null);
 						}
 					}
 
 					@Override
 					public void onFailure(Call<TranslateDto> call, Throwable t) {
-						Log.e("Request error", t.toString());
+						CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+						dictionaryLayout.setVisibility(View.INVISIBLE);
+						showToastNetworkProblem();
 					}
 				});
 	}
 
+	private void fillTranslate(TranslateDto translateDto, String localTextToTranslate) {
+		if (translateDto.getText() != null && !translateDto.getText().isEmpty() && translateDto
+				.getText().get(0).length() > 1) {
+			CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
+			translatedText.setText(translateDto.getText().get(0));
+			HistoryDao historyDao = daoSession.getHistoryDao();
+			history = historyDao.queryBuilder()
+					.where(HistoryDao.Properties.Text.eq(localTextToTranslate),
+							HistoryDao.Properties.SourceLang.eq(new Gson().toJson(langState.getSourceLang())))
+					.unique();
+			if (history == null) {
+				history = new History(null, localTextToTranslate, translateDto.getText().get(0),
+						langState.getTargetLang(), langState.getSourceLang(), false, new Date());
+				favoriteIcon.setImageResource(R.drawable.ic_favorite);
+				historyDao.save(history);
+			} else {
+				favoriteIcon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
+				history.setDate(new Date());
+				historyDao.update(history);
+			}
+			historyState.setState(1);
+		} else {
+			CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+		}
+	}
+
+	private void fillDictionary(DictionaryDto dictionaryDto) {
+		Log.d("dictionaryDto", dictionaryDto.toString());
+		if (!dictionaryDto.getDef().isEmpty()) {
+			dictionaryList.clear();
+			dictionaryList.addAll(dictionaryDto.getDef());
+			dictionaryRecyclerViewAdapter.notifyDataSetChanged();
+			dictionaryLayout.setVisibility(View.VISIBLE);
+			DefinitionDto definitionDto = dictionaryDto.getDef().get(0);
+			if (definitionDto != null && definitionDto.getTs() != null) {
+				if (!definitionDto.getTs().isEmpty()) {
+					dictionaryWordTs.setText(getString(R.string.tsTemplate, definitionDto.getTs()));
+				}
+				if (!definitionDto.getText().isEmpty()) {
+					dictionaryWord.setText(definitionDto.getText());
+				}
+			}
+		}
+	}
+
+	private void setupDictionaryRv() {
+		dictionaryList = new ArrayList<>();
+		dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		dictionaryRecyclerViewAdapter = new
+				DictionaryRecyclerViewAdapter(dictionaryList, getActivity());
+		dictionaryRecyclerView.setAdapter(dictionaryRecyclerViewAdapter);
+		dictionaryRecyclerViewAdapter.notifyDataSetChanged();
+	}
+
 	public void dictionary() {
-		if (TextUtils.isEmpty(textToTranslate.getText())) {
+
+		final String localTextToTranslate = textToTranslate.getText().toString();
+
+		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
+
+		if (cacheRequest != null) {
+			fillDictionary(cacheRequest.getDictionaryDto());
 			return;
 		}
 
 		DictionaryAPI apiService = DictionaryAPIClient.getClient().create(DictionaryAPI.class);
-		apiService.translate(getString(R.string.Yandex_Dictionary_API), textToTranslate.getText().toString(), langState.getLangDir())
+		apiService.translate(getString(R.string.Yandex_Dictionary_API), localTextToTranslate,
+				langState.getLangDir())
 				.enqueue(new Callback<DictionaryDto>() {
 					@Override
 					public void onResponse(Call<DictionaryDto> call, Response<DictionaryDto> response) {
 						if (response.body() != null) {
-							DictionaryDto dictionaryDto = response.body();
-							Log.d("dictionaryDto", dictionaryDto.toString());
-							if (!dictionaryDto.getDef().isEmpty()) {
-								ViewListUtils.setVisibilityToList(dictionaryViews, View.VISIBLE);
-								DefinitionDto definitionDto = dictionaryDto.getDef().get(0);
-								if (definitionDto != null && definitionDto.getTs() != null) {
-									if (!definitionDto.getTs().isEmpty()) {
-										dictionaryWordTs.setText(getString(R.string.tsTemplate, definitionDto.getTs()));
-									}
-									if (!definitionDto.getText().isEmpty()) {
-										dictionaryWord.setText(definitionDto.getText());
-									}
-									if (!definitionDto.getPos().isEmpty()) {
-										pos.setText(definitionDto.getPos());
-									}
-								}
-							}
+							fillDictionary(response.body());
+							cache.addOrUpdate(localTextToTranslate, langState.getLangDir(), null,
+									response.body());
 						} else {
-							ViewListUtils.setVisibilityToList(dictionaryViews, View.INVISIBLE);
+							dictionaryLayout.setVisibility(View.INVISIBLE);
 						}
 					}
 
 					@Override
 					public void onFailure(Call<DictionaryDto> call, Throwable t) {
-						Log.e("Request error", t.toString());
+						dictionaryLayout.setVisibility(View.INVISIBLE);
+						showToastNetworkProblem();
 					}
 				});
 	}
@@ -321,7 +371,7 @@ public class TranslationFragment extends Fragment {
 		startChooseLangIntent(TARGET_LANGUAGE_REQUEST);
 	}
 
-	public void startChooseLangIntent(int type){
+	private void startChooseLangIntent(int type) {
 		Intent intent = new Intent(getContext(), ChooseLangActivity.class);
 		intent.putExtra("TypeOfLang", type);
 		startActivityForResult(intent, type);
@@ -332,11 +382,12 @@ public class TranslationFragment extends Fragment {
 		langState.switchLangs();
 		setTextViewLangsFromState();
 
-		String translatedTextTemp = translatedText.getText().toString();
-		translatedText.setText(textToTranslate.getText().toString());
-		textToTranslate.setText(translatedTextTemp);
-
-		translate();
+		if (!translatedText.getText().equals("")) {
+			String translatedTextTemp = translatedText.getText().toString();
+			translatedText.setText(textToTranslate.getText().toString());
+			textToTranslate.setText(translatedTextTemp);
+			translate();
+		}
 	}
 
 	@Override
@@ -366,9 +417,6 @@ public class TranslationFragment extends Fragment {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (!isVisibleToUser && getActivity() != null && textToTranslate != null) {
 			hideSoftKeyboard(getActivity(), textToTranslate);
-			textToTranslate.setText("");
-			ViewListUtils.setVisibilityToList(dictionaryViews, View.INVISIBLE);
-			ViewListUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 		}
 	}
 
@@ -386,6 +434,16 @@ public class TranslationFragment extends Fragment {
 			@Override
 			public void run() {
 				Toast.makeText(getContext(), TranslationFragment.this.getString(R.string.thisButtonIsNotImplementedYet), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	private void showToastNetworkProblem() {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(getContext(), TranslationFragment.this.getString(R.string.networkProblem), Toast
+						.LENGTH_SHORT).show();
 			}
 		});
 	}

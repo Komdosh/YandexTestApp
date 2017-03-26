@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,9 +8,9 @@
         android:id="@+id/mainActivityPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/tabIconSize"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        android:layout_marginBottom="@dimen/tabIconSize"/>
+        tools:layout_editor_absoluteY="8dp" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
@@ -21,7 +20,6 @@
         android:background="@color/white"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorPrimary"
-        app:tabMode="fixed"
-        />
+        app:tabMode="fixed" />
 
 </android.support.design.widget.CoordinatorLayout>

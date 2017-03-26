@@ -45,7 +45,7 @@ public class LangState {
 		}
 	}
 
-	public void switchLangs(){
+	public void switchLangs() {
 		Lang temp = sourceLang;
 		sourceLang = targetLang;
 		targetLang = temp;

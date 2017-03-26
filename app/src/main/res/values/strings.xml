@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Komdosh Yandex Translator</string>
+    <string name="app_name">YaKomdosh</string>
 
     <string name="translate">Translate</string>
     <string name="settings">Settings</string>
@@ -13,7 +13,8 @@
     <string name="translateHint">Type text to translate</string>
 
     <string name="unexpectedError">There is an unexpected error</string>
-    <string name="thisSectionDeveloped">This section in develop</string>
+    <string name="networkProblem">Check your network</string>
+    <string name="thisSectionInDevelop">This section in develop</string>
 
     <string name="thisButtonIsNotImplementedYet">This button is not implemented yet</string>
 

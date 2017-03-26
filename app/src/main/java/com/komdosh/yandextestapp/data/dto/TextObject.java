@@ -17,8 +17,6 @@ public class TextObject {
 
 	@Override
 	public String toString() {
-		return "TextObject{" +
-				"text='" + text + '\'' +
-				'}';
+		return text;
 	}
 }

@@ -7,207 +7,189 @@
     tools:context="com.komdosh.yandextestapp.ui.fragments.TranslationFragment">
 
     <include
-        layout="@layout/toolbar_activity_main"
         android:id="@+id/toolbar"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp"
+        layout="@layout/toolbar_activity_main"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 
     <TextView
         android:id="@+id/yandexAd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginMaterial"
         android:layout_marginLeft="@dimen/marginMaterial"
         android:layout_marginStart="@dimen/marginMaterial"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/marginMaterial"
         android:text="@string/yandexAd"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-        />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/editTranslate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginMaterial"
+        android:background="@drawable/rectangle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/yandexAd"
-        android:layout_margin="@dimen/marginMaterial"
-        android:background="@drawable/rectangle"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1">
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1">
 
         <EditText
             android:id="@+id/textToTranslate"
             android:layout_width="0dp"
-            android:layout_height="120dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="100dp"
+            android:layout_marginEnd="@dimen/rightMarginForButtons"
             android:layout_marginLeft="@dimen/marginMaterial"
+            android:layout_marginRight="@dimen/rightMarginForButtons"
             android:layout_marginStart="@dimen/marginMaterial"
             android:layout_marginTop="@dimen/marginMaterial"
-            android:layout_marginRight="@dimen/rightMarginForButtons"
-            android:layout_marginEnd="@dimen/rightMarginForButtons"
             android:background="@android:color/transparent"
-            android:hint="@string/translateHint"
             android:gravity="top"
+            android:hint="@string/translateHint"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:imeOptions="actionDone" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/recordText"
-            android:layout_height="48dp"
             android:layout_width="48dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/ic_mic"
+            android:layout_height="48dp"
             android:background="@android:color/transparent"
-            app:layout_constraintTop_toTopOf="@+id/textToTranslate" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textToTranslate"
+            app:srcCompat="@drawable/ic_mic" />
 
         <ImageButton
             android:id="@+id/playEditText"
-            android:layout_height="48dp"
             android:layout_width="48dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/ic_play_sound"
-            app:layout_constraintBottom_toBottomOf="@+id/textToTranslate"
+            android:layout_height="48dp"
             android:background="@android:color/transparent"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/textToTranslate"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_play_sound" />
 
         <ImageButton
             android:id="@+id/clearText"
-            android:layout_height="48dp"
             android:layout_width="48dp"
-            app:srcCompat="@drawable/ic_clear"
-            android:background="@android:color/transparent"
+            android:layout_height="48dp"
             android:layout_marginTop="@dimen/marginMaterial"
-            app:layout_constraintTop_toBottomOf="@+id/textToTranslate"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:visibility="invisible" />
+            app:layout_constraintTop_toBottomOf="@+id/textToTranslate"
+            app:srcCompat="@drawable/ic_clear" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView
         android:id="@+id/translatedText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginMaterial"
         android:layout_marginLeft="@dimen/marginMaterial"
         android:layout_marginStart="@dimen/marginMaterial"
-        app:layout_constraintLeft_toLeftOf="@id/editTranslate"
-        app:layout_constraintTop_toBottomOf="@id/editTranslate"
-        android:textStyle="bold"
+        android:layout_marginTop="@dimen/marginMaterial"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/editTranslate"
         app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-        />
+        app:layout_constraintTop_toBottomOf="@id/editTranslate" />
 
     <ImageButton
         android:id="@+id/playTranslated"
-        android:layout_height="48dp"
         android:layout_width="48dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_play_sound"
+        android:layout_height="48dp"
         android:background="@android:color/transparent"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTranslate"
-        android:visibility="invisible" />
+        app:srcCompat="@drawable/ic_play_sound" />
 
     <ImageButton
         android:id="@+id/favoriteIcon"
-        android:layout_height="48dp"
         android:layout_width="48dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_favorite"
+        android:layout_height="48dp"
         android:background="@android:color/transparent"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playTranslated"
-        android:visibility="invisible" />
+        app:srcCompat="@drawable/ic_favorite" />
 
     <ImageButton
         android:id="@+id/shareTranslate"
-        android:layout_height="48dp"
         android:layout_width="48dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_share"
+        android:layout_height="48dp"
         android:background="@android:color/transparent"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favoriteIcon"
-        android:visibility="invisible" />
+        app:srcCompat="@drawable/ic_share" />
 
     <ImageButton
         android:id="@+id/fullScreenWord"
-        android:layout_height="48dp"
         android:layout_width="48dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_full_screen"
+        android:layout_height="48dp"
         android:background="@android:color/transparent"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shareTranslate"
-        android:visibility="invisible" />
+        app:srcCompat="@drawable/ic_full_screen" />
 
     <LinearLayout
-        android:id="@+id/dictionaryWordLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="@id/translatedText"
-        app:layout_constraintTop_toBottomOf="@id/translatedText"
-        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-        android:padding="10dp">
-        <TextView
-            android:id="@+id/dictionaryWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/editTranslate"
-            app:layout_constraintTop_toBottomOf="@id/editTranslate"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:visibility="invisible"
-            app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-            />
-        <TextView
-            android:id="@+id/dictionaryWordTs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/dictionaryWordLayout"
-            app:layout_constraintTop_toBottomOf="@id/dictionaryWordLayout"
-            android:layout_marginLeft="@dimen/marginMaterial"
-            android:layout_marginStart="@dimen/marginMaterial"
-            android:textStyle="bold"
-            android:textColor="@color/gray"
-            android:visibility="invisible"
-            app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-            />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/pos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/dictionaryWordLayout"
-        app:layout_constraintTop_toBottomOf="@+id/dictionaryWordLayout"
-        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-        app:layout_constraintBottom_toTopOf="@+id/dictionaryDescription"
-        android:gravity="start"
-        android:textStyle="italic"
-        android:textColor="@color/pos"
-        android:visibility="visible"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="@dimen/marginMaterial"
-
-        android:layout_marginTop="0dp" />
-
-    <android.support.v7.widget.RecyclerView
         android:id="@+id/dictionaryDescription"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/pos"
-        app:layout_constraintRight_toLeftOf="@+id/playTranslated"
-        app:layout_constraintLeft_toLeftOf="@+id/translatedText"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="invisible"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintLeft_toLeftOf="@id/translatedText"
+        app:layout_constraintRight_toLeftOf="@id/playTranslated"
+        app:layout_constraintTop_toBottomOf="@id/translatedText">
+
+        <LinearLayout
+            android:id="@+id/dictionaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginMaterial"
+            android:layout_marginTop="@dimen/marginMaterial"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dictionaryWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/editTranslate"
+                app:layout_constraintRight_toLeftOf="@+id/playTranslated"
+                app:layout_constraintTop_toBottomOf="@id/editTranslate" />
+
+            <TextView
+                android:id="@+id/dictionaryWordTs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/marginMaterial"
+                android:layout_marginStart="@dimen/marginMaterial"
+                android:textColor="@color/gray"
+                android:textStyle="bold"
+                app:layout_constraintRight_toLeftOf="@+id/playTranslated" />
+
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dictionaryRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -25,7 +25,6 @@ public class History {
 	@Convert(converter = LangConverter.class, columnType = String.class)
 	Lang sourceLang;
 	boolean favorite;
-
 	Date date;
 
 	@Generated(hash = 1057999277)

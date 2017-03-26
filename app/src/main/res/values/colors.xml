@@ -18,4 +18,8 @@
 
     <color name="white_87">#DEFFFFFF</color>
     <color name="white_54">#8AFFFFFF</color>
+
+    <color name="synWords">#4B7893</color>
+    <color name="meanWords">#8D634D</color>
+    <color name="exampleText">#78909c</color>
 </resources>

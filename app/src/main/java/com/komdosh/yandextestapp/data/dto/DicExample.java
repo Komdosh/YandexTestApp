@@ -29,9 +29,6 @@ public class DicExample {
 
 	@Override
 	public String toString() {
-		return "DicExample{" +
-				"text='" + text + '\'' +
-				", tr=" + tr +
-				'}';
+		return text + " - " + tr.get(0);
 	}
 }
