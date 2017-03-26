@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainActivityToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:minHeight="?attr/actionBarSize">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeightLayout"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/sourceLang"
+            style="@style/LangToolbarTextView" />
+
+        <ImageButton
+            android:id="@+id/switchLang"
+            android:layout_width="@dimen/iconSizeLayout"
+            android:layout_height="@dimen/iconSizeLayout"
+            android:layout_marginEnd="@dimen/marginMaterial"
+            android:layout_marginLeft="@dimen/marginMaterial"
+            android:layout_marginRight="@dimen/marginMaterial"
+            android:layout_marginStart="@dimen/marginMaterial"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cdSwitchLang"
+            app:srcCompat="@drawable/ic_compare_arrows" />
+
+        <TextView
+            android:id="@+id/targetLang"
+            style="@style/LangToolbarTextView" />
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>
