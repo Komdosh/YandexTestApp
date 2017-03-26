@@ -60,7 +60,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 				history.getTargetLang().getCode() +
 				"]";
 
-		holder.icon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
+		holder.icon.setImageResource(getFavoriteIcon(history.getFavorite()));
 		holder.langs.setText(languages);
 		holder.text.setText(history.getText());
 		holder.translatedText.setText(history.getTranslatedText());
@@ -75,13 +75,16 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 		if (histories == null) {
 			return 0;
 		}
-
 		return histories.size();
 	}
 
 	public void remove(int position) {
 		histories.remove(position);
 		notifyItemRemoved(position);
+	}
+
+	private int getFavoriteIcon(boolean favorite) {
+		return favorite ? R.drawable.ic_favorite_active : R.drawable.ic_favorite;
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
@@ -108,7 +111,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 					History history = histories.get(getAdapterPosition());
 					HistoryState.getInstance().setState(1);
 					history.setFavorite(!history.getFavorite());
-					icon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
+					icon.setImageResource(getFavoriteIcon(history.getFavorite()));
 					daoSession.getHistoryDao().update(history);
 				}
 			});
@@ -117,7 +120,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 			translatedText.setOnClickListener(toTranslate());
 		}
 
-		public View.OnClickListener toTranslate() {
+		private View.OnClickListener toTranslate() {
 			return new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -134,7 +137,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-			menu.add(R.id.delete, getAdapterPosition(), 0, activity.getString(R.string.delete));//groupId, itemId, order, title
+			menu.add(R.id.delete, getAdapterPosition(), 0, activity.getString(R.string.delete));
 		}
 	}
 }

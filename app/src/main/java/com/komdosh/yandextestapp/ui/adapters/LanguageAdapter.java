@@ -1,6 +1,5 @@
 package com.komdosh.yandextestapp.ui.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +12,17 @@ import com.komdosh.yandextestapp.data.model.Lang;
 import java.util.List;
 
 /**
- * Created by komdosh on 19.03.17.
+ *  @author komdosh
+ *          created on 19.03.17.
  */
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder> {
 
 	private List<Lang> languages;
-	private Context context;
 
-	public LanguageAdapter(List<Lang> languages, Context context) {
+	public LanguageAdapter(List<Lang> languages) {
 		super();
 		this.languages = languages;
-		this.context = context;
 	}
 
 	@Override
@@ -35,15 +33,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(LanguageAdapter.ViewHolder holder, int position) {
-		if (languages == null) {
+		if (languages == null || languages.get(position) != null) {
 			return;
 		}
 
-		Lang item = languages.get(position);
-
 		holder.lang.setVisibility(View.VISIBLE);
-		holder.lang.setText(item.getName());
-
+		holder.lang.setText(languages.get(position).getName());
 	}
 
 	public Lang getItem(int position) {
@@ -55,7 +50,6 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 		if (languages == null) {
 			return 0;
 		}
-
 		return languages.size();
 	}
 

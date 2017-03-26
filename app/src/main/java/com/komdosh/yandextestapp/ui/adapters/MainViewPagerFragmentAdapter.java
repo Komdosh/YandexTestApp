@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by komdosh on 19.03.17.
+ *  @author komdosh
+ *          created on 19.03.17.
  */
 
 public class MainViewPagerFragmentAdapter extends FragmentPagerAdapter {
-	private final List<Fragment> mFragmentList = new ArrayList<>();
+	private final List<Fragment> fragments = new ArrayList<>();
 
 	public MainViewPagerFragmentAdapter(FragmentManager manager) {
 		super(manager);
@@ -20,12 +21,12 @@ public class MainViewPagerFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return mFragmentList.get(position);
+		return fragments.get(position);
 	}
 
 	public Fragment getItemByClass(Class<? extends Fragment> findClass) {
 		Fragment found = null;
-		for (Fragment fragment : mFragmentList) {
+		for (Fragment fragment : fragments) {
 			if (findClass.isInstance(fragment)) {
 				found = fragment;
 				break;
@@ -36,11 +37,11 @@ public class MainViewPagerFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return mFragmentList.size();
+		return fragments.size();
 	}
 
 	public void addFragment(Fragment fragment) {
-		mFragmentList.add(fragment);
+		fragments.add(fragment);
 	}
 
 	@Override

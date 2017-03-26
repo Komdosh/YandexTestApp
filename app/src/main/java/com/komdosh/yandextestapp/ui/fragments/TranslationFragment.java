@@ -66,7 +66,7 @@ public class TranslationFragment extends Fragment {
 
 	public static final int SOURCE_LANGUAGE_REQUEST = 1;
 	public static final int TARGET_LANGUAGE_REQUEST = 2;
-
+	private static final String TAG = "TranslationFragment";
 	@BindView(R.id.sourceLang)
 	TextView sourceLang;
 
@@ -179,7 +179,7 @@ public class TranslationFragment extends Fragment {
 	@OnClick(R.id.fullScreenWord)
 	public void fullScreenWord() {
 		Intent intent = new Intent(getActivity(), WordActivity.class);
-		intent.putExtra("word", translatedText.getText());
+		intent.putExtra("text", translatedText.getText());
 		startActivity(intent);
 	}
 
@@ -374,7 +374,7 @@ public class TranslationFragment extends Fragment {
 
 	private void startChooseLangIntent(int type) {
 		Intent intent = new Intent(getContext(), ChooseLangActivity.class);
-		intent.putExtra("TypeOfLang", type);
+		intent.putExtra(ChooseLangActivity.INTENT_TYPE_OF_LANG_KEY, type);
 		startActivityForResult(intent, type);
 	}
 
@@ -383,7 +383,7 @@ public class TranslationFragment extends Fragment {
 		langState.switchLangs();
 		setTextViewLangsFromState();
 
-		if (!translatedText.getText().equals("")) {
+		if (!"".equals(translatedText.getText())) {
 			String translatedTextTemp = translatedText.getText().toString();
 			translatedText.setText(textToTranslate.getText().toString());
 			textToTranslate.setText(translatedTextTemp);
@@ -426,7 +426,7 @@ public class TranslationFragment extends Fragment {
 			sourceLang.setText(langState.getSourceLang().getName());
 			targetLang.setText(langState.getTargetLang().getName());
 		} catch (NullPointerException e) {
-			Log.d("NPE langs TextView", e.toString());
+			Log.d(TAG, e.toString());
 		}
 	}
 

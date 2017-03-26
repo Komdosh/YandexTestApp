@@ -11,6 +11,9 @@ import com.komdosh.yandextestapp.R;
 import butterknife.ButterKnife;
 
 public class SettingsFragment extends Fragment {
+
+	private static final String TAG = "SettingsFragment";
+
 	public SettingsFragment() {
 		// Required empty public constructor
 	}

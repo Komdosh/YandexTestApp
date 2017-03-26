@@ -30,9 +30,9 @@ import java.util.List;
 public class HistoryFavoriteFragment extends Fragment {
 
 	public static final String TYPE_KEY = "type";
-
 	public static final int HISTORY = 0;
 	public static final int FAVORITE = 1;
+	private static final String TAG = "HistoryFavoriteFragment";
 	List<History> histories;
 	private int type;
 	private RecyclerView recyclerView;

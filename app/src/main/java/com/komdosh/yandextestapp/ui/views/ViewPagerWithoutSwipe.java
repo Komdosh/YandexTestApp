@@ -10,6 +10,7 @@ import android.view.MotionEvent;
  *         created on 23.03.17.
  */
 
+//This custom view pager used for prevent swipe between main fragments like translate and favorite
 public class ViewPagerWithoutSwipe extends ViewPager {
 	public ViewPagerWithoutSwipe(Context context) {
 		super(context);
@@ -21,13 +22,13 @@ public class ViewPagerWithoutSwipe extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		// Never allow swiping to switch between pages
+		//Never allow swiping to switch between pages
 		return false;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// Never allow swiping to switch between pages
+		//Never allow swiping to switch between pages
 		return false;
 	}
 }

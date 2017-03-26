@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.LangsDto;
@@ -30,17 +31,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChooseLangActivity extends AppCompatActivity {
+/**
+ * @author komdosh
+ *         created on 19.03.17
+ */
 
+public class ChooseLangActivity extends AppCompatActivity {
+	public static final String INTENT_TYPE_OF_LANG_KEY = "TypeOfLang";
+	private static final String TAG = "ChooseLangActivity";
 	List<Lang> langs = new ArrayList<>();
 
-	@BindView(R.id.langs)
+	@BindView(R.id.langRecyclerView)
 	RecyclerView langRecyclerView;
 
 	@BindView(R.id.languageActivityToolbar)
-	Toolbar toolbar;
+	Toolbar languageActivityToolbar;
 
-	LanguageAdapter adapter;
+	private LanguageAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +56,8 @@ public class ChooseLangActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 
 		setupToolbar();
-		setupRecylcerView();
+		setupRecyclerView();
+
 		if (langs.isEmpty()) {
 			getLangs();
 		}
@@ -58,64 +66,72 @@ public class ChooseLangActivity extends AppCompatActivity {
 	public void getLangs() {
 		TranslateAPI apiService = TranslateAPIClient.getClient().create(TranslateAPI.class);
 		final String lang;
-		if (Locale.getDefault().getLanguage().matches("ru")) {
+		if ("ru".matches(Locale.getDefault().getLanguage())) {
 			lang = "ru";
 		} else {
 			lang = "en";
 		}
-		apiService.getLangs(getString(R.string.Yandex_Translate_API), lang).enqueue(new Callback<LangsDto>() {
-			@Override
-			public void onResponse(Call<LangsDto> call, Response<LangsDto> response) {
-				if (response.body() != null) {
-					LangsDto langsDto = response.body();
-					for (Map.Entry<String, String> entry : langsDto.getLangs().entrySet()) {
-						langs.add(new Lang(entry.getKey(), entry.getValue()));
+		apiService.getLangs(getString(R.string.Yandex_Translate_API), lang)
+				.enqueue(new Callback<LangsDto>() {
+					@Override
+					public void onResponse(Call<LangsDto> call, Response<LangsDto> response) {
+						if (response.body() != null) {
+							for (Map.Entry<String, String> entry : response.body().getLangs().entrySet()) {
+								langs.add(new Lang(entry.getKey(), entry.getValue()));
+							}
+							adapter.notifyDataSetChanged();
+						}
 					}
-					adapter.notifyDataSetChanged();
-				}
-			}
 
-			@Override
-			public void onFailure(Call<LangsDto> call, Throwable t) {
-				Log.e("Request error", t.toString());
-			}
-		});
+					@Override
+					public void onFailure(Call<LangsDto> call, Throwable t) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(ChooseLangActivity.this, getString(R.string.networkProblem), Toast
+										.LENGTH_SHORT).show();
+							}
+						});
+					}
+				});
 	}
 
-	private void setupRecylcerView() {
-		adapter = new LanguageAdapter(langs, this);
+	private void setupRecyclerView() {
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		langRecyclerView.setLayoutManager(layoutManager);
 		langRecyclerView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
-		langRecyclerView.setAdapter(adapter);
 		langRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
 			@Override
 			public void onItemClick(View view, int position) {
-
 				Intent intent = new Intent();
 				intent.putExtra("language", adapter.getItem(position));
 				setResult(RESULT_OK, intent);
 				finish();
-
 			}
 		}));
 
+		adapter = new LanguageAdapter(langs);
+		langRecyclerView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
 
 	private void setupToolbar() {
-		switch (getIntent().getIntExtra("TypeOfLang", 0)) {
+		switch (getIntent().getIntExtra(INTENT_TYPE_OF_LANG_KEY, 0)) {
 			case TranslationFragment.SOURCE_LANGUAGE_REQUEST:
-				toolbar.setTitle(getString(R.string.selectSrcLanguageTitle));
+				languageActivityToolbar.setTitle(getString(R.string.selectSrcLanguageTitle));
 				break;
 			case TranslationFragment.TARGET_LANGUAGE_REQUEST:
-				toolbar.setTitle(getString(R.string.selectDstLanguageTitle));
+				languageActivityToolbar.setTitle(getString(R.string.selectDstLanguageTitle));
 				break;
 			default:
 				finish();
 		}
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar(languageActivityToolbar);
+		try {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		} catch (NullPointerException e) {
+			Log.e(TAG, e.toString());
+		}
 	}
 }
 

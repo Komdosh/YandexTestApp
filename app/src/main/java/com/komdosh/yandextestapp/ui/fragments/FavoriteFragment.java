@@ -14,7 +14,13 @@ import com.komdosh.yandextestapp.ui.adapters.HistoryViewPagerFragmentAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author komdosh
+ *         created on 19.03.17
+ */
+
 public class FavoriteFragment extends Fragment {
+	private static final String TAG = "FavoriteFragment";
 
 	@BindView(R.id.historyViewPager)
 	ViewPager viewPager;

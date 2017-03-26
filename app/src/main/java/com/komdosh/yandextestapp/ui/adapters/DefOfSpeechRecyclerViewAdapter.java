@@ -1,7 +1,6 @@
 package com.komdosh.yandextestapp.ui.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.komdosh.yandextestapp.App;
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.DicTranslatedDto;
-import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import java.util.List;
 
@@ -26,15 +23,9 @@ public class DefOfSpeechRecyclerViewAdapter extends RecyclerView.Adapter<DefOfSp
 
 	private List<DicTranslatedDto> defOfSpeech;
 
-	private DaoSession daoSession;
-
-	private Activity activity;
-
-	public DefOfSpeechRecyclerViewAdapter(List<DicTranslatedDto> defOfSpeech, Activity activity) {
+	public DefOfSpeechRecyclerViewAdapter(List<DicTranslatedDto> defOfSpeech) {
 		super();
 		this.defOfSpeech = defOfSpeech;
-		this.activity = activity;
-		daoSession = ((App) activity.getApplicationContext()).getDaoSession();
 	}
 
 	@Override
@@ -44,7 +35,6 @@ public class DefOfSpeechRecyclerViewAdapter extends RecyclerView.Adapter<DefOfSp
 		return new ViewHolder(post);
 	}
 
-
 	@Override
 	@SuppressLint("SetTextI18n")
 	public void onBindViewHolder(ViewHolder holder, int position) {
@@ -52,32 +42,32 @@ public class DefOfSpeechRecyclerViewAdapter extends RecyclerView.Adapter<DefOfSp
 			return;
 		}
 
+		DicTranslatedDto dicTranslatedDto = defOfSpeech.get(position);
+
 		holder.numberOfPos.setText(Integer.toString(position) + " ");
 
-		if (defOfSpeech.get(position).getText() != null) {
-			String wordWithSyn = defOfSpeech.get(position).getText();
-			if (defOfSpeech.get(position).getSyn() != null) {
+		if (dicTranslatedDto.getText() != null) {
+			String wordWithSyn = dicTranslatedDto.getText();
+			if (dicTranslatedDto.getSyn() != null) {
 				wordWithSyn += ", ";
-				wordWithSyn += TextUtils.join(", ", defOfSpeech.get(position).getSyn());
+				wordWithSyn += TextUtils.join(", ", dicTranslatedDto.getSyn());
 			}
 			holder.syn.setText(wordWithSyn);
 		} else {
 			holder.syn.setVisibility(View.GONE);
 		}
 
-		if (defOfSpeech.get(position).getMean() != null) {
-			holder.mean.setText("(" + TextUtils.join(", ", defOfSpeech.get(position).getMean()) + ")");
+		if (dicTranslatedDto.getMean() != null) {
+			holder.mean.setText("(" + TextUtils.join(", ", dicTranslatedDto.getMean()) + ")");
 		} else {
 			holder.mean.setVisibility(View.GONE);
 		}
 
-		if (defOfSpeech.get(position).getEx() != null) {
-			holder.ex.setText(TextUtils.join("\n ", defOfSpeech.get(position).getEx()));
+		if (dicTranslatedDto.getEx() != null) {
+			holder.ex.setText(TextUtils.join("\n ", dicTranslatedDto.getEx()));
 		} else {
 			holder.ex.setVisibility(View.GONE);
 		}
-
-
 	}
 
 	public DicTranslatedDto getItem(int position) {

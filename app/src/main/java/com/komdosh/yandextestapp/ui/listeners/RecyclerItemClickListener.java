@@ -6,6 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+//This class used for implement click on RecyclerView item for example on history tab
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
 	private OnItemClickListener mListener;
 	private GestureDetector mGestureDetector;
@@ -22,7 +23,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
 
 	@Override
 	public void onRequestDisallowInterceptTouchEvent(final boolean disallowIntercept) {
-
+		//Need not to disallow touch events
 	}
 
 	@Override
@@ -36,6 +37,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
 
 	@Override
 	public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+		//Need not to capture touch events
 	}
 
 	public interface OnItemClickListener {

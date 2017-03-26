@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,7 +20,13 @@ import com.komdosh.yandextestapp.ui.views.ViewPagerWithoutSwipe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author komdosh
+ *         created on 16.03.17
+ */
+
 public class MainActivity extends AppCompatActivity {
+	private static final String TAG = "MainActivity";
 
 	@BindView(R.id.mainActivityPager)
 	ViewPagerWithoutSwipe viewPager;
@@ -35,15 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 		setupViewPager(viewPager);
 
-		viewPager.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
-
 		tabLayout.setupWithViewPager(viewPager);
-
 		setupTabIcons();
 	}
 
@@ -54,20 +53,24 @@ public class MainActivity extends AppCompatActivity {
 				R.drawable.ic_tab_settings
 		};
 
-		for (int i = 0; i < tabIcons.length; i++) {
-			tabLayout.getTabAt(i).setIcon(tabIcons[i]);
-		}
-
-		//TODO (AT): remove when settings will be implemented
-		LinearLayout tabStrip = (LinearLayout) tabLayout.getChildAt(0);
-		tabStrip.getChildAt(2).setOnTouchListener(new View
-				.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				showToastDisabledTab();
-				return true;
+		try {
+			for (int i = 0; i < tabIcons.length; i++) {
+				tabLayout.getTabAt(i).setIcon(tabIcons[i]);
 			}
-		});
+
+			//TODO (AT): remove when settings will be implemented
+			LinearLayout tabStrip = (LinearLayout) tabLayout.getChildAt(0);
+			tabStrip.getChildAt(2).setOnTouchListener(new View
+					.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) { // 2 - index of settings tab
+					showToastDisabledTab();
+					return true;
+				}
+			});
+		} catch (NullPointerException e) {
+			Log.e(TAG, e.toString());
+		}
 	}
 
 	private void showToastDisabledTab() {

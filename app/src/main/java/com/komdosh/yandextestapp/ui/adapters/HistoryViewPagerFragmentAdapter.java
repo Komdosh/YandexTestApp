@@ -13,8 +13,8 @@ import java.util.List;
  */
 
 public class HistoryViewPagerFragmentAdapter extends FragmentPagerAdapter {
-	private final List<Fragment> mFragmentList = new ArrayList<>();
-	private final List<String> mFragmentTitleList = new ArrayList<>();
+	private final List<Fragment> fragments = new ArrayList<>();
+	private final List<String> fragmentTitles = new ArrayList<>();
 
 	public HistoryViewPagerFragmentAdapter(FragmentManager manager) {
 		super(manager);
@@ -22,21 +22,21 @@ public class HistoryViewPagerFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		return mFragmentList.get(position);
+		return fragments.get(position);
 	}
 
 	@Override
 	public int getCount() {
-		return mFragmentList.size();
+		return fragments.size();
 	}
 
 	public void addFragment(Fragment fragment, String title) {
-		mFragmentList.add(fragment);
-		mFragmentTitleList.add(title);
+		fragments.add(fragment);
+		fragmentTitles.add(title);
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		return mFragmentTitleList.get(position);
+		return fragmentTitles.get(position);
 	}
 }

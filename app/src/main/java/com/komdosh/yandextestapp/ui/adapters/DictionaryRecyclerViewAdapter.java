@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.komdosh.yandextestapp.App;
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.DefinitionDto;
-import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import java.util.List;
 
@@ -25,15 +23,12 @@ public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<Dictiona
 
 	private List<DefinitionDto> definitionDtos;
 
-	private DaoSession daoSession;
-
 	private Activity activity;
 
 	public DictionaryRecyclerViewAdapter(List<DefinitionDto> definitionDtos, Activity activity) {
 		super();
 		this.definitionDtos = definitionDtos;
 		this.activity = activity;
-		daoSession = ((App) activity.getApplicationContext()).getDaoSession();
 	}
 
 	@Override
@@ -43,17 +38,18 @@ public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<Dictiona
 		return new ViewHolder(post);
 	}
 
-
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		if (definitionDtos == null || definitionDtos.get(position) == null) {
 			return;
 		}
 
-		holder.pos.setText(definitionDtos.get(position).getPos());
+		DefinitionDto definitionDto = definitionDtos.get(position);
+
+		holder.pos.setText(definitionDto.getPos());
 		holder.dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
 		DefOfSpeechRecyclerViewAdapter defOfSpeechRecyclerViewAdapter = new
-				DefOfSpeechRecyclerViewAdapter(definitionDtos.get(position).getTr(), activity);
+				DefOfSpeechRecyclerViewAdapter(definitionDto.getTr());
 		holder.dictionaryRecyclerView.setAdapter(defOfSpeechRecyclerViewAdapter);
 		defOfSpeechRecyclerViewAdapter.notifyDataSetChanged();
 	}
@@ -70,7 +66,6 @@ public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<Dictiona
 
 		return definitionDtos.size();
 	}
-
 
 	class ViewHolder extends RecyclerView.ViewHolder {
 		TextView pos;
