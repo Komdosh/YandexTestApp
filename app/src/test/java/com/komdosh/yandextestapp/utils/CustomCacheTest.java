@@ -8,8 +8,10 @@ import com.komdosh.yandextestapp.data.model.entity.DaoSession;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,6 +30,7 @@ import static org.mockito.Mockito.when;
  *         created on 26.03.17.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class CustomCacheTest {
 
 	@Mock
@@ -71,6 +74,6 @@ public class CustomCacheTest {
 
 	@Before
 	public void init() {
-		when(mock(DaoSession.class).getCacheRequestDao()).thenReturn(mock(CacheRequestDao.class));
+		when(mock(DaoSession.class).getCacheRequestDao()).thenReturn(cacheRequestDao);
 	}
 }
