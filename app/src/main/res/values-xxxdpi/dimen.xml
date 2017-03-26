@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="iconSize">24dp</dimen>
+    <dimen name="tabIconSize">32dp</dimen>
+    <dimen name="iconSizeLayout">32dp</dimen>
+    <dimen name="toolbarHeightLayout">32dp</dimen>
+    <dimen name="marginMaterial">4dp</dimen>
+    <dimen name="recyclerViewListItemsPadding">4dp</dimen>
+    <dimen name="langToolbarTextSize">16sp</dimen>
+
+    <dimen name="textToTranslateHeight">70dp</dimen>
+</resources>
