@@ -18,11 +18,17 @@ public class HistoryState {
 		return ourInstance;
 	}
 
-	public int getState() {
-		return state;
+	public void setNotifyState() {
+		state = 1;
 	}
 
-	public void setState(int state) {
-		this.state = state;
+	public void resetNotifyState() {
+		state = 0;
+	}
+
+	public int readAndClearNotifyState() {
+		int tempState = state;
+		state = 0;
+		return tempState;
 	}
 }

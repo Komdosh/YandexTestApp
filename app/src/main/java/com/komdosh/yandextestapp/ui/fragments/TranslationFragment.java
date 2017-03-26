@@ -67,6 +67,7 @@ public class TranslationFragment extends Fragment {
 	public static final int SOURCE_LANGUAGE_REQUEST = 1;
 	public static final int TARGET_LANGUAGE_REQUEST = 2;
 	private static final String TAG = "TranslationFragment";
+
 	@BindView(R.id.sourceLang)
 	TextView sourceLang;
 
@@ -92,13 +93,13 @@ public class TranslationFragment extends Fragment {
 	ImageView favoriteIcon;
 
 	@BindView(R.id.dictionaryLayout)
-	LinearLayout dictionaryLayout;
+	LinearLayout dictionaryDescription;
 
 	@BindView(R.id.dictionaryRecyclerView)
 	RecyclerView dictionaryRecyclerView;
 
 	@BindViews({R.id.playTranslated, R.id.favoriteIcon, R.id.shareTranslate, R.id.fullScreenWord,
-			R.id.translatedText, R.id.dictionaryDescription, R.id.clearText, R.id.playEditText})
+			R.id.translatedText, R.id.dictionary, R.id.clearText, R.id.playEditText})
 	List<View> translateControl;
 
 	LangState langState = LangState.getInstance();
@@ -123,42 +124,57 @@ public class TranslationFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 
-		daoSession = ((App) getActivity().getApplication()).getDaoSession();
-
 		View rootView = inflater.inflate(R.layout.fragment_translation, container, false);
+		daoSession = ((App) getActivity().getApplication()).getDaoSession();
 		ButterKnife.bind(this, rootView);
 
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 		historyState = HistoryState.getInstance();
 		cache = new CustomCache(daoSession);
 		cache.invalidateOld();
+
 		setupEditText();
 		setTextViewLangsFromState();
 		setupDictionaryRv();
 		return rootView;
 	}
 
-	public void setupEditText() {
+	private void setupEditText() {
 		textToTranslate.setHorizontallyScrolling(false);
 		textToTranslate.setLines(Integer.MAX_VALUE);
 		textToTranslate.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-
 					if (textToTranslate.getText().toString().matches("")) {
 						CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 					} else {
 						translate();
 					}
-
 					hideSoftKeyboard(getActivity(), textToTranslate);
-
 					return true;
 				}
 				return false;
 			}
 		});
+	}
+
+	private void setupDictionaryRv() {
+		dictionaryList = new ArrayList<>();
+		dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		dictionaryRecyclerViewAdapter = new
+				DictionaryRecyclerViewAdapter(dictionaryList, getActivity());
+		dictionaryRecyclerView.setAdapter(dictionaryRecyclerViewAdapter);
+		dictionaryRecyclerViewAdapter.notifyDataSetChanged();
+	}
+
+	private void setTextViewLangsFromState() {
+		try {
+			sourceLang.setText(langState.getSourceLang().getName());
+			targetLang.setText(langState.getTargetLang().getName());
+		} catch (NullPointerException e) {
+			Log.d(TAG, e.toString());
+		}
 	}
 
 	public void translateHistory(History history) {
@@ -167,13 +183,11 @@ public class TranslationFragment extends Fragment {
 		}
 		this.history = history;
 		textToTranslate.setText(history.getText());
-		translatedText.setText(history.getTranslatedText());
-		CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
 
 		langState.setSourceLang(history.getSourceLang());
 		langState.setTargetLang(history.getTargetLang());
 		setTextViewLangsFromState();
-		dictionary();
+		translate();
 	}
 
 	@OnClick(R.id.fullScreenWord)
@@ -208,7 +222,7 @@ public class TranslationFragment extends Fragment {
 		history.setFavorite(!history.getFavorite());
 		favoriteIcon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
 		daoSession.getHistoryDao().update(history);
-		historyState.setState(1);
+		historyState.setNotifyState();
 	}
 
 	@OnClick(R.id.clearText)
@@ -216,7 +230,7 @@ public class TranslationFragment extends Fragment {
 		textToTranslate.setText("");
 		hideSoftKeyboard(getActivity(), textToTranslate);
 		CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
-		dictionaryLayout.setVisibility(View.INVISIBLE);
+		dictionaryDescription.setVisibility(View.INVISIBLE);
 	}
 
 	/*	@OnTextChanged(R.id.textToTranslate)
@@ -232,7 +246,7 @@ public class TranslationFragment extends Fragment {
 		}
 	}*/
 
-	public void translate() {
+	private void translate() {
 		if (TextUtils.isEmpty(textToTranslate.getText())) {
 			return;
 		}
@@ -242,7 +256,7 @@ public class TranslationFragment extends Fragment {
 		if (localTextToTranslate.split(" ").length == 1) {
 			dictionary();
 		} else {
-			dictionaryLayout.setVisibility(View.VISIBLE);
+			dictionaryDescription.setVisibility(View.VISIBLE);
 		}
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
@@ -267,66 +281,13 @@ public class TranslationFragment extends Fragment {
 					@Override
 					public void onFailure(Call<TranslateDto> call, Throwable t) {
 						CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
-						dictionaryLayout.setVisibility(View.INVISIBLE);
+						dictionaryDescription.setVisibility(View.INVISIBLE);
 						showToastNetworkProblem();
 					}
 				});
 	}
 
-	private void fillTranslate(TranslateDto translateDto, String localTextToTranslate) {
-		if (translateDto.getText() != null && !translateDto.getText().isEmpty() && translateDto
-				.getText().get(0).length() > 1) {
-			CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
-			translatedText.setText(translateDto.getText().get(0));
-			HistoryDao historyDao = daoSession.getHistoryDao();
-			history = historyDao.queryBuilder()
-					.where(HistoryDao.Properties.Text.eq(localTextToTranslate),
-							HistoryDao.Properties.SourceLang.eq(new Gson().toJson(langState.getSourceLang())))
-					.unique();
-			if (history == null) {
-				history = new History(null, localTextToTranslate, translateDto.getText().get(0),
-						langState.getTargetLang(), langState.getSourceLang(), false, new Date());
-				favoriteIcon.setImageResource(R.drawable.ic_favorite);
-				historyDao.save(history);
-			} else {
-				favoriteIcon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
-				history.setDate(new Date());
-				historyDao.update(history);
-			}
-			historyState.setState(1);
-		} else {
-			CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
-		}
-	}
-
-	private void fillDictionary(DictionaryDto dictionaryDto) {
-		if (!dictionaryDto.getDef().isEmpty()) {
-			dictionaryList.clear();
-			dictionaryList.addAll(dictionaryDto.getDef());
-			dictionaryRecyclerViewAdapter.notifyDataSetChanged();
-			dictionaryLayout.setVisibility(View.VISIBLE);
-			DefinitionDto definitionDto = dictionaryDto.getDef().get(0);
-			if (definitionDto != null && definitionDto.getTs() != null) {
-				if (!definitionDto.getTs().isEmpty()) {
-					dictionaryWordTs.setText(getString(R.string.tsTemplate, definitionDto.getTs()));
-				}
-				if (!definitionDto.getText().isEmpty()) {
-					dictionaryWord.setText(definitionDto.getText());
-				}
-			}
-		}
-	}
-
-	private void setupDictionaryRv() {
-		dictionaryList = new ArrayList<>();
-		dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		dictionaryRecyclerViewAdapter = new
-				DictionaryRecyclerViewAdapter(dictionaryList, getActivity());
-		dictionaryRecyclerView.setAdapter(dictionaryRecyclerViewAdapter);
-		dictionaryRecyclerViewAdapter.notifyDataSetChanged();
-	}
-
-	public void dictionary() {
+	private void dictionary() {
 
 		final String localTextToTranslate = textToTranslate.getText().toString();
 
@@ -349,18 +310,70 @@ public class TranslationFragment extends Fragment {
 							cache.addOrUpdate(localTextToTranslate, langState.getLangDir(), null,
 									response.body());
 						} else {
-							dictionaryLayout.setVisibility(View.INVISIBLE);
+							dictionaryDescription.setVisibility(View.INVISIBLE);
 						}
 					}
 
 					@Override
 					public void onFailure(Call<DictionaryDto> call, Throwable t) {
-						dictionaryLayout.setVisibility(View.INVISIBLE);
+						dictionaryDescription.setVisibility(View.INVISIBLE);
 						showToastNetworkProblem();
 					}
 				});
 	}
 
+	private void fillTranslate(TranslateDto translateDto, String localTextToTranslate) {
+
+		final List<String> translateDtoTexts = translateDto.getText();
+
+		if (translateDtoTexts != null && !translateDtoTexts.isEmpty()
+				&& translateDtoTexts.get(0).length() > 1) {
+
+			CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
+			translatedText.setText(translateDtoTexts.get(0));
+			HistoryDao historyDao = daoSession.getHistoryDao();
+			history = historyDao.queryBuilder()
+					.where(HistoryDao.Properties.Text.eq(localTextToTranslate),
+							HistoryDao.Properties.SourceLang.eq(new Gson().toJson(langState.getSourceLang())))
+					.unique();
+
+			if (history == null) {
+				history = new History(null, localTextToTranslate, translateDtoTexts.get(0),
+						langState.getTargetLang(), langState.getSourceLang(), false, new Date());
+				historyDao.save(history);
+			} else {
+				history.setDate(new Date());
+				historyDao.update(history);
+			}
+
+			favoriteIcon.setImageResource(history.getFavorite() ? R.drawable.ic_favorite_active : R.drawable.ic_favorite);
+			historyState.setNotifyState();
+
+		} else {
+			CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
+		}
+	}
+
+	private void fillDictionary(DictionaryDto dictionaryDto) {
+		if (!dictionaryDto.getDef().isEmpty()) {
+			dictionaryList.clear();
+			dictionaryList.addAll(dictionaryDto.getDef());
+			dictionaryRecyclerViewAdapter.notifyDataSetChanged();
+
+			dictionaryDescription.setVisibility(View.VISIBLE);
+
+			DefinitionDto definitionDto = dictionaryDto.getDef().get(0);
+			if (definitionDto != null && definitionDto.getTs() != null) {
+				if (!definitionDto.getTs().isEmpty()) {
+					dictionaryWordTs.setText(getString(R.string.tsTemplate, definitionDto.getTs()));
+				}
+				if (!definitionDto.getText().isEmpty()) {
+					dictionaryWord.setText(definitionDto.getText());
+				}
+			}
+
+		}
+	}
 
 	@OnClick(R.id.sourceLang)
 	public void chooseSourceLang() {
@@ -374,7 +387,7 @@ public class TranslationFragment extends Fragment {
 
 	private void startChooseLangIntent(int type) {
 		Intent intent = new Intent(getContext(), ChooseLangActivity.class);
-		intent.putExtra(ChooseLangActivity.INTENT_TYPE_OF_LANG_KEY, type);
+		intent.putExtra(ChooseLangActivity.INTENT_REQUEST_TYPE_OF_LANG_KEY, type);
 		startActivityForResult(intent, type);
 	}
 
@@ -399,12 +412,12 @@ public class TranslationFragment extends Fragment {
 		Lang lang;
 		switch (requestCode) {
 			case SOURCE_LANGUAGE_REQUEST:
-				lang = (Lang) data.getSerializableExtra("language");
+				lang = (Lang) data.getSerializableExtra(ChooseLangActivity.INTENT_RESULT_LANGUAGE_KEY);
 				sourceLang.setText(lang.getName());
 				langState.setSourceLang(lang);
 				break;
 			case TARGET_LANGUAGE_REQUEST:
-				lang = (Lang) data.getSerializableExtra("language");
+				lang = (Lang) data.getSerializableExtra(ChooseLangActivity.INTENT_RESULT_LANGUAGE_KEY);
 				targetLang.setText(lang.getName());
 				langState.setTargetLang(lang);
 				break;
@@ -418,15 +431,6 @@ public class TranslationFragment extends Fragment {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (!isVisibleToUser && getActivity() != null && textToTranslate != null) {
 			hideSoftKeyboard(getActivity(), textToTranslate);
-		}
-	}
-
-	private void setTextViewLangsFromState() {
-		try {
-			sourceLang.setText(langState.getSourceLang().getName());
-			targetLang.setText(langState.getTargetLang().getName());
-		} catch (NullPointerException e) {
-			Log.d(TAG, e.toString());
 		}
 	}
 

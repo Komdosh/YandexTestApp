@@ -109,7 +109,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 				@Override
 				public void onClick(View v) {
 					History history = histories.get(getAdapterPosition());
-					HistoryState.getInstance().setState(1);
+					HistoryState.getInstance().setNotifyState();
 					history.setFavorite(!history.getFavorite());
 					icon.setImageResource(getFavoriteIcon(history.getFavorite()));
 					daoSession.getHistoryDao().update(history);

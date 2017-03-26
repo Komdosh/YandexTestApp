@@ -37,7 +37,8 @@ import retrofit2.Response;
  */
 
 public class ChooseLangActivity extends AppCompatActivity {
-	public static final String INTENT_TYPE_OF_LANG_KEY = "TypeOfLang";
+	public static final String INTENT_REQUEST_TYPE_OF_LANG_KEY = "TypeOfLang";
+	public static final String INTENT_RESULT_LANGUAGE_KEY = "language";
 	private static final String TAG = "ChooseLangActivity";
 	List<Lang> langs = new ArrayList<>();
 
@@ -104,7 +105,7 @@ public class ChooseLangActivity extends AppCompatActivity {
 			@Override
 			public void onItemClick(View view, int position) {
 				Intent intent = new Intent();
-				intent.putExtra("language", adapter.getItem(position));
+				intent.putExtra(INTENT_RESULT_LANGUAGE_KEY, adapter.getItem(position));
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -116,7 +117,7 @@ public class ChooseLangActivity extends AppCompatActivity {
 	}
 
 	private void setupToolbar() {
-		switch (getIntent().getIntExtra(INTENT_TYPE_OF_LANG_KEY, 0)) {
+		switch (getIntent().getIntExtra(INTENT_REQUEST_TYPE_OF_LANG_KEY, 0)) {
 			case TranslationFragment.SOURCE_LANGUAGE_REQUEST:
 				languageActivityToolbar.setTitle(getString(R.string.selectSrcLanguageTitle));
 				break;

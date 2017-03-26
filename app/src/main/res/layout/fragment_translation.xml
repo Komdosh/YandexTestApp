@@ -146,7 +146,7 @@
         app:srcCompat="@drawable/ic_full_screen" />
 
     <LinearLayout
-        android:id="@+id/dictionaryDescription"
+        android:id="@+id/dictionary"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"

@@ -100,10 +100,9 @@ public class HistoryFavoriteFragment extends Fragment {
 
 	public void updateItems() {
 		HistoryState historyState = HistoryState.getInstance();
-		if (historyRecyclerViewAdapter != null && historyState.getState() == 1) {
+		if (historyRecyclerViewAdapter != null && historyState.readAndClearNotifyState() == 1) {
 			loadListOfItem();
 			historyRecyclerViewAdapter.notifyDataSetChanged();
-			historyState.setState(0);
 		}
 	}
 
