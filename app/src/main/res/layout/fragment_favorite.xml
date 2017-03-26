@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             app:tabGravity="center"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/text_active"
-            app:tabTextColor="@color/text_inactive" />
+            app:tabSelectedTextColor="@color/textActive"
+            app:tabTextColor="@color/textInactive" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

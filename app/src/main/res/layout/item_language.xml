@@ -5,7 +5,7 @@
     android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/spacing_xlarge">
+    android:padding="@dimen/recyclerViewListItemsPadding">
 
     <TextView
         android:id="@+id/lang"

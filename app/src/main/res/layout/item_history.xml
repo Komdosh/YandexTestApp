@@ -7,7 +7,7 @@
     android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/spacing_xlarge">
+    android:padding="@dimen/recyclerViewListItemsPadding">
 
     <ImageView
         android:id="@+id/icon"
@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_xlarge"
-        android:layout_marginRight="@dimen/spacing_xlarge"
+        android:layout_marginLeft="@dimen/marginMaterial"
+        android:layout_marginRight="@dimen/marginMaterial"
         android:layout_weight="1"
         android:orientation="vertical">
 

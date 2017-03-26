@@ -8,17 +8,13 @@
     <color name="black">#000</color>
     <color name="gray">#858E98</color>
 
-    <color name="pos">#A37D92</color>
+    <color name="iconInactive">#858E98</color>
+    <color name="iconActive">#000</color>
 
-    <color name="icon_inactive">#858E98</color>
-    <color name="icon_active">#000</color>
+    <color name="textInactive">#a4ffffff</color>
+    <color name="textActive">#000</color>
 
-    <color name="text_inactive">#a4ffffff</color>
-    <color name="text_active">#000</color>
-
-    <color name="white_87">#DEFFFFFF</color>
-    <color name="white_54">#8AFFFFFF</color>
-
+    <color name="posWord">#A37D92</color>
     <color name="synWords">#4B7893</color>
     <color name="meanWords">#8D634D</color>
     <color name="exampleText">#78909c</color>
