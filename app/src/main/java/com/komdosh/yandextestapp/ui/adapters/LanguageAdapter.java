@@ -33,7 +33,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(LanguageAdapter.ViewHolder holder, int position) {
-		if (languages == null || languages.get(position) != null) {
+		if (languages == null || languages.get(position) == null) {
 			return;
 		}
 

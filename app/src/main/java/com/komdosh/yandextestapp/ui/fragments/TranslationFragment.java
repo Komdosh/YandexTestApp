@@ -51,6 +51,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,7 +93,7 @@ public class TranslationFragment extends Fragment {
 	@BindView(R.id.favoriteIcon)
 	ImageView favoriteIcon;
 
-	@BindView(R.id.dictionaryLayout)
+	@BindView(R.id.dictionary)
 	LinearLayout dictionaryDescription;
 
 	@BindView(R.id.dictionaryRecyclerView)
@@ -233,18 +234,14 @@ public class TranslationFragment extends Fragment {
 		dictionaryDescription.setVisibility(View.INVISIBLE);
 	}
 
-	/*	@OnTextChanged(R.id.textToTranslate)
+	@OnTextChanged(R.id.textToTranslate)
 	public void editTextChanged() {
 		if (textToTranslate.getText().toString().matches("")) {
 			CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 		} else {
-			if (translateControl.get(0).getVisibility() != View.VISIBLE) {
-				CustomViewUtils.setVisibilityToList(translateControl, View.VISIBLE);
-			}
 			translate();
-			dictionary();
 		}
-	}*/
+	}
 
 	private void translate() {
 		if (TextUtils.isEmpty(textToTranslate.getText())) {
@@ -261,7 +258,7 @@ public class TranslationFragment extends Fragment {
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
 
-		if (cacheRequest != null) {
+		if (cacheRequest != null && cacheRequest.getTranslateDto() != null) {
 			fillTranslate(cacheRequest.getTranslateDto(), localTextToTranslate);
 			cache.update(cacheRequest);
 			return;
@@ -293,7 +290,7 @@ public class TranslationFragment extends Fragment {
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
 
-		if (cacheRequest != null) {
+		if (cacheRequest != null && cacheRequest.getDictionaryDto() != null) {
 			fillDictionary(cacheRequest.getDictionaryDto());
 			cache.update(cacheRequest);
 			return;
