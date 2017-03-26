@@ -3,6 +3,8 @@
     <dimen name="iconSize">36dp</dimen>
     <dimen name="tabIconSize">48dp</dimen>
     <dimen name="iconSizeLayout">48dp</dimen>
+    <dimen name="toolbarHeightLayout">48dp</dimen>
     <dimen name="marginMaterial">8dp</dimen>
-    <dimen name="recyclerViewListItemsPadding">10dp</dimen>
+    <dimen name="recyclerViewListItemsPadding">8dp</dimen>
+    <dimen name="langToolbarTextSize">24sp</dimen>
 </resources>
