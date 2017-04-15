@@ -9,14 +9,12 @@ import com.komdosh.yandextestapp.provider.modules.DbModule;
 import com.komdosh.yandextestapp.provider.modules.HistoryModule;
 import com.komdosh.yandextestapp.provider.modules.LangModule;
 
-import java.io.Serializable;
-
 /**
  * @author komdosh
  *         created on 16.03.17
  */
 
-public class App extends Application implements Serializable {
+public class App extends Application {
 
 	private static AppComponent component;
 
