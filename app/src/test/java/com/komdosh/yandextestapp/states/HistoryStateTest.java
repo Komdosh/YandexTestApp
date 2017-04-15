@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class HistoryStateTest {
 
 	@InjectMocks
-	HistoryState historyState = HistoryState.getInstance();
+	HistoryState historyState = new HistoryState();
 
 	@Test
 	public void setNotifyState() throws Exception {

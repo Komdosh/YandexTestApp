@@ -20,7 +20,9 @@
 
     <string name="delete">Удалить</string>
 
-    <string name="yandexAd">Данное приложение использует API Яндекс переводчика и словаря</string>
+    <string name="yandexAd">Данное приложение использует API Яндекс
+        <a href="http://translate.yandex.ru/">переводчика</a> и
+        <a href="http:///slovari.yandex.ru/">словаря</a></string>
     <string name="Yandex_Translate_API">trnsl.1.1.20170319T151758Z.8272e770a532510f.5cded39f7b636d544c6c22f088236bdc6d9bc5f3</string>
     <string name="Yandex_Dictionary_API">dict.1.1.20170319T171957Z.017b9e0b4c483489.159e559a0265543bb06e84a967aff5c1d400c87e</string>
 

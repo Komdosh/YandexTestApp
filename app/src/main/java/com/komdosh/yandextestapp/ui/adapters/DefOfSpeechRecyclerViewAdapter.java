@@ -44,7 +44,7 @@ public class DefOfSpeechRecyclerViewAdapter extends RecyclerView.Adapter<DefOfSp
 
 		DicTranslatedDto dicTranslatedDto = defOfSpeech.get(position);
 
-		holder.numberOfPos.setText(Integer.toString(position) + " ");
+		holder.numberOfPos.setText(Integer.toString(position + 1) + " ");
 
 		if (dicTranslatedDto.getText() != null) {
 			String wordWithSyn = dicTranslatedDto.getText();

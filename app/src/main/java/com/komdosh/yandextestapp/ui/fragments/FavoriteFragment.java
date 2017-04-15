@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  */
 
 public class FavoriteFragment extends Fragment {
-	private static final String TAG = "FavoriteFragment";
+	private static final String TAG = FavoriteFragment.class.getSimpleName();
 
 	@BindView(R.id.historyViewPager)
 	ViewPager viewPager;

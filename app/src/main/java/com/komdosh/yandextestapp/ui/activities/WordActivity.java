@@ -18,7 +18,7 @@ import butterknife.OnClick;
  */
 
 public class WordActivity extends AppCompatActivity {
-	private static final String TAG = "WordActivity";
+	private static final String TAG = WordActivity.class.getSimpleName();
 
 	@BindView(R.id.word)
 	TextView wordView;

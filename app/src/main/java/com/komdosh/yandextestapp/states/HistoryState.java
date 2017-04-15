@@ -6,16 +6,10 @@ package com.komdosh.yandextestapp.states;
  */
 
 public class HistoryState {
-	private static final HistoryState ourInstance = new HistoryState();
-
 	private int state;
 
-	private HistoryState() {
+	public HistoryState() {
 		state = 0;
-	}
-
-	public static HistoryState getInstance() {
-		return ourInstance;
 	}
 
 	public void setNotifyState() {

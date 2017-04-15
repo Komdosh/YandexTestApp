@@ -22,6 +22,8 @@ import org.greenrobot.greendao.query.QueryBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * @author komdosh
  *         created on 19.03.17.
@@ -32,11 +34,16 @@ public class HistoryFavoriteFragment extends Fragment {
 	public static final String TYPE_KEY = "type";
 	public static final int HISTORY = 0;
 	public static final int FAVORITE = 1;
-	private static final String TAG = "HistoryFavoriteFragment";
+	private static final String TAG = HistoryFavoriteFragment.class.getSimpleName();
+
+	@Inject
+	HistoryState historyState;
+	@Inject
+	DaoSession daoSession;
+
 	List<History> histories;
 	private RecyclerView recyclerView;
 	private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
-	private DaoSession daoSession;
 
 	public HistoryFavoriteFragment() {
 		// Required empty public constructor for adapter
@@ -45,7 +52,7 @@ public class HistoryFavoriteFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		daoSession = ((App) getActivity().getApplication()).getDaoSession();
+		App.getComponent().inject(this);
 		View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 		recyclerView = (RecyclerView) rootView.findViewById(R.id.historyRecyclerView);
 
@@ -99,7 +106,6 @@ public class HistoryFavoriteFragment extends Fragment {
 	}
 
 	public void updateItems() {
-		HistoryState historyState = HistoryState.getInstance();
 		if (historyRecyclerViewAdapter != null && historyState.readAndClearNotifyState() == 1) {
 			loadListOfItem();
 			historyRecyclerViewAdapter.notifyDataSetChanged();

@@ -39,7 +39,8 @@ import retrofit2.Response;
 public class ChooseLangActivity extends AppCompatActivity {
 	public static final String INTENT_REQUEST_TYPE_OF_LANG_KEY = "TypeOfLang";
 	public static final String INTENT_RESULT_LANGUAGE_KEY = "language";
-	private static final String TAG = "ChooseLangActivity";
+	private static final String TAG = ChooseLangActivity.class.getSimpleName();
+
 	List<Lang> langs = new ArrayList<>();
 
 	@BindView(R.id.langRecyclerView)

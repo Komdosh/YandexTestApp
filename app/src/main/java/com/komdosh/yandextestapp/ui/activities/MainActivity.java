@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  */
 
 public class MainActivity extends AppCompatActivity {
-	private static final String TAG = "MainActivity";
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	@BindView(R.id.mainActivityPager)
 	ViewPagerWithoutSwipe viewPager;

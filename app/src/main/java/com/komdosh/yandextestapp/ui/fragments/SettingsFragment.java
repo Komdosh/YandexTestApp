@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 //TODO (AT): implement settings fragment
 public class SettingsFragment extends Fragment {
 
-	private static final String TAG = "SettingsFragment";
+	private static final String TAG = SettingsFragment.class.getSimpleName();
 
 	public SettingsFragment() {
 		// Required empty public constructor

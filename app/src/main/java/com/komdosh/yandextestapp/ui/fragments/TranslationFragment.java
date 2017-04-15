@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -67,7 +70,7 @@ public class TranslationFragment extends Fragment {
 
 	public static final int SOURCE_LANGUAGE_REQUEST = 1;
 	public static final int TARGET_LANGUAGE_REQUEST = 2;
-	private static final String TAG = "TranslationFragment";
+	private static final String TAG = TranslationFragment.class.getSimpleName();
 
 	@BindView(R.id.sourceLang)
 	TextView sourceLang;
@@ -103,18 +106,16 @@ public class TranslationFragment extends Fragment {
 			R.id.translatedText, R.id.dictionary, R.id.clearText, R.id.playEditText})
 	List<View> translateControl;
 
-	LangState langState = LangState.getInstance();
-
+	@Inject
+	LangState langState;
+	@Inject
+	HistoryState historyState;
+	@Inject
 	DaoSession daoSession;
 
 	History history;
-
-	HistoryState historyState;
-
 	DictionaryRecyclerViewAdapter dictionaryRecyclerViewAdapter;
-
 	List<DefinitionDto> dictionaryList;
-
 	CustomCache cache;
 
 	public TranslationFragment() {
@@ -125,14 +126,17 @@ public class TranslationFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 
+		App.getComponent().inject(this);
 		View rootView = inflater.inflate(R.layout.fragment_translation, container, false);
-		daoSession = ((App) getActivity().getApplication()).getDaoSession();
 		ButterKnife.bind(this, rootView);
 
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-		historyState = HistoryState.getInstance();
 		cache = new CustomCache(daoSession);
 		cache.invalidateOld();
+
+		//Link to Yandex services
+		((TextView) rootView.findViewById(R.id.yandexAd))
+				.setMovementMethod(LinkMovementMethod.getInstance());
 
 		setupEditText();
 		setTextViewLangsFromState();
@@ -294,7 +298,6 @@ public class TranslationFragment extends Fragment {
 
 		if (cacheRequest != null && cacheRequest.getDictionaryDto() != null && !cacheRequest
 				.getDictionaryDto().getDef().isEmpty()) {
-			Log.d("CACHE", cacheRequest.getDictionaryDto().toString());
 			fillDictionary(cacheRequest.getDictionaryDto());
 			cache.update(cacheRequest);
 			return;

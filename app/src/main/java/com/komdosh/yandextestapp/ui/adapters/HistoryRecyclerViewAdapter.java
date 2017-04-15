@@ -19,35 +19,42 @@ import com.komdosh.yandextestapp.ui.fragments.TranslationFragment;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * @author komdosh
  *         created on 19.03.17.
  */
 
-public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
+public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.HistoryViewHolder> {
+
+	@Inject
+	HistoryState historyState;
+	@Inject
+	DaoSession daoSession;
 
 	private List<History> histories;
 
-	private DaoSession daoSession;
-
 	private Activity activity;
+
 
 	public HistoryRecyclerViewAdapter(List<History> histories, Activity activity) {
 		super();
 		this.histories = histories;
 		this.activity = activity;
-		daoSession = ((App) activity.getApplicationContext()).getDaoSession();
+
+		App.getComponent().inject(this);
 	}
 
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View post = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history, parent, false);
 
-		return new ViewHolder(post);
+		return new HistoryViewHolder(post);
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position) {
+	public void onBindViewHolder(HistoryViewHolder holder, int position) {
 		if (histories == null) {
 			return;
 		}
@@ -87,7 +94,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 		return favorite ? R.drawable.ic_favorite_active : R.drawable.ic_favorite;
 	}
 
-	class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+	class HistoryViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 		ImageView icon;
 
 		TextView text;
@@ -97,7 +104,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 		TextView langs;
 
 		//Initializing Views
-		ViewHolder(View view) {
+		HistoryViewHolder(View view) {
 			super(view);
 			view.setOnCreateContextMenuListener(this);
 			icon = (ImageView) view.findViewById(R.id.icon);
@@ -109,7 +116,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 				@Override
 				public void onClick(View v) {
 					History history = histories.get(getAdapterPosition());
-					HistoryState.getInstance().setNotifyState();
+
+					historyState.setNotifyState();
+
 					history.setFavorite(!history.getFavorite());
 					icon.setImageResource(getFavoriteIcon(history.getFavorite()));
 					daoSession.getHistoryDao().update(history);

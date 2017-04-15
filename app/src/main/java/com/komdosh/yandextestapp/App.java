@@ -2,30 +2,41 @@ package com.komdosh.yandextestapp;
 
 import android.app.Application;
 
-import com.komdosh.yandextestapp.data.model.entity.DaoMaster;
-import com.komdosh.yandextestapp.data.model.entity.DaoSession;
+import com.komdosh.yandextestapp.provider.components.AppComponent;
+import com.komdosh.yandextestapp.provider.components.DaggerAppComponent;
+import com.komdosh.yandextestapp.provider.modules.AppModule;
+import com.komdosh.yandextestapp.provider.modules.DbModule;
+import com.komdosh.yandextestapp.provider.modules.HistoryModule;
+import com.komdosh.yandextestapp.provider.modules.LangModule;
 
-import org.greenrobot.greendao.database.Database;
+import java.io.Serializable;
 
 /**
  * @author komdosh
  *         created on 16.03.17
  */
 
-public class App extends Application {
+public class App extends Application implements Serializable {
 
-	private DaoSession daoSession;
+	private static AppComponent component;
+
+	public static AppComponent getComponent() {
+		return component;
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "yandex_translate_db");
-		Database db = helper.getWritableDb();
-		daoSession = new DaoMaster(db).newSession();
+		initDaggerComponent();
 	}
 
-	public DaoSession getDaoSession() {
-		return daoSession;
+	private void initDaggerComponent() {
+		component = DaggerAppComponent.builder()
+				.appModule(new AppModule(this))
+				.historyModule(new HistoryModule())
+				.langModule(new LangModule())
+				.dbModule(new DbModule(this))
+				.build();
 	}
 }

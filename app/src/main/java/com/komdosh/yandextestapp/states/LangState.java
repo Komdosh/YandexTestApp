@@ -11,18 +11,13 @@ import java.util.Locale;
  */
 
 public class LangState {
-	private static final LangState ourInstance = new LangState();
 
 	private LangsDto langsDtos;
 	private Lang sourceLang;
 	private Lang targetLang;
 
-	private LangState() {
+	public LangState() {
 		initLangs();
-	}
-
-	public static LangState getInstance() {
-		return ourInstance;
 	}
 
 	public String getLangDir() {

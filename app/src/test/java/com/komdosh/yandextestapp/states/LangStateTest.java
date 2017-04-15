@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class LangStateTest {
 
 	@InjectMocks
-	LangState langState = LangState.getInstance();
+	LangState langState = new LangState();
 
 	@Test
 	public void getLangDir() throws Exception {
@@ -36,5 +36,4 @@ public class LangStateTest {
 		langState.setSourceLang(new Lang("ru", "Russian"));
 		langState.setTargetLang(new Lang("en", "English"));
 	}
-
 }

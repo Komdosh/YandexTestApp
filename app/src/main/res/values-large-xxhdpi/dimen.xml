@@ -8,5 +8,5 @@
     <dimen name="recyclerViewListItemsPadding">24dp</dimen>
     <dimen name="langToolbarTextSize">36sp</dimen>
 
-    <dimen name="textToTranslateHeight">200dp</dimen>
+    <dimen name="textToTranslateHeight">150dp</dimen>
 </resources>
