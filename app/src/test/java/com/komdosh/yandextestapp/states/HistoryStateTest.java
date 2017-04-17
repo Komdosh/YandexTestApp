@@ -13,26 +13,18 @@ import static org.junit.Assert.assertThat;
 public class HistoryStateTest {
 
 	@InjectMocks
-	HistoryState historyState = new HistoryState();
+	private HistoryState historyState = new HistoryState();
 
 	@Test
 	public void setNotifyState() throws Exception {
 		historyState.setNotifyState();
-		assertThat(historyState.readAndClearNotifyState(), is(1));
+		assertThat(historyState.isNotifyState(), is(true));
 	}
 
 	@Test
 	public void resetNotifyState() throws Exception {
 		historyState.setNotifyState();
 		historyState.resetNotifyState();
-		assertThat(historyState.readAndClearNotifyState(), is(0));
+		assertThat(historyState.isNotifyState(), is(false));
 	}
-
-	@Test
-	public void readAndClearNotifyState() throws Exception {
-		historyState.setNotifyState();
-		assertThat(historyState.readAndClearNotifyState(), is(1));
-		assertThat(historyState.readAndClearNotifyState(), is(0));
-	}
-
 }

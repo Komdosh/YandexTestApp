@@ -5,6 +5,7 @@ import com.komdosh.yandextestapp.provider.modules.DbModule;
 import com.komdosh.yandextestapp.provider.modules.HistoryModule;
 import com.komdosh.yandextestapp.provider.modules.LangModule;
 import com.komdosh.yandextestapp.ui.activities.MainActivity;
+import com.komdosh.yandextestapp.ui.adapters.DictionaryRecyclerViewAdapter;
 import com.komdosh.yandextestapp.ui.adapters.HistoryRecyclerViewAdapter;
 import com.komdosh.yandextestapp.ui.fragments.HistoryFavoriteFragment;
 import com.komdosh.yandextestapp.ui.fragments.TranslationFragment;
@@ -28,4 +29,6 @@ public interface AppComponent {
 	void inject(HistoryFavoriteFragment historyFavoriteFragment);
 
 	void inject(TranslationFragment translationFragment);
+
+	void inject(DictionaryRecyclerViewAdapter dictionaryRecyclerViewAdapter);
 }

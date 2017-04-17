@@ -20,9 +20,7 @@ public class HistoryState {
 		state = 0;
 	}
 
-	public int readAndClearNotifyState() {
-		int tempState = state;
-		state = 0;
-		return tempState;
+	public boolean isNotifyState() {
+		return state == 1;
 	}
 }

@@ -18,8 +18,8 @@ import butterknife.OnClick;
  */
 
 public class WordActivity extends AppCompatActivity {
+	public static final String TEXT_KEY = "text";
 	private static final String TAG = WordActivity.class.getSimpleName();
-
 	@BindView(R.id.word)
 	TextView wordView;
 
@@ -35,7 +35,7 @@ public class WordActivity extends AppCompatActivity {
 
 		ButterKnife.bind(this);
 
-		String word = getIntent().getStringExtra("text");
+		String word = getIntent().getStringExtra(TEXT_KEY);
 		if (word != null) {
 			wordView.setText(word);
 		} else {

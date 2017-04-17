@@ -151,7 +151,7 @@ public class TranslationFragment extends Fragment {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					if (textToTranslate.getText().toString().matches("")) {
+					if (textToTranslate.getText().toString().isEmpty()) {
 						CustomViewUtils.setVisibilityToList(translateControl, View.INVISIBLE);
 					} else {
 						translate();
@@ -168,7 +168,7 @@ public class TranslationFragment extends Fragment {
 		dictionaryList = new ArrayList<>();
 		dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		dictionaryRecyclerViewAdapter = new
-				DictionaryRecyclerViewAdapter(dictionaryList, getActivity());
+				DictionaryRecyclerViewAdapter(dictionaryList);
 		dictionaryRecyclerView.setAdapter(dictionaryRecyclerViewAdapter);
 		dictionaryRecyclerViewAdapter.notifyDataSetChanged();
 	}
@@ -198,7 +198,7 @@ public class TranslationFragment extends Fragment {
 	@OnClick(R.id.fullScreenWord)
 	public void fullScreenWord() {
 		Intent intent = new Intent(getActivity(), WordActivity.class);
-		intent.putExtra("text", translatedText.getText());
+		intent.putExtra(WordActivity.TEXT_KEY, translatedText.getText());
 		startActivity(intent);
 	}
 

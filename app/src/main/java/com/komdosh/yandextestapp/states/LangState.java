@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class LangState {
 
-	private LangsDto langsDtos;
+	private LangsDto langsDto;
 	private Lang sourceLang;
 	private Lang targetLang;
 
@@ -35,8 +35,8 @@ public class LangState {
 			sourceLang = new Lang("ru", "Русский");
 			targetLang = new Lang("en", "Английский");
 		} else {
-			sourceLang = new Lang("ru", "Russian");
-			targetLang = new Lang("en", "English");
+			sourceLang = new Lang("en", "English");
+			targetLang = new Lang("ru", "Russian");
 		}
 	}
 
@@ -46,12 +46,12 @@ public class LangState {
 		targetLang = temp;
 	}
 
-	public LangsDto getLangsDtos() {
-		return langsDtos;
+	public LangsDto getLangsDto() {
+		return langsDto;
 	}
 
-	public void setLangsDtos(LangsDto langsDtos) {
-		this.langsDtos = langsDtos;
+	public void setLangsDto(LangsDto langsDto) {
+		this.langsDto = langsDto;
 	}
 
 	public Lang getSourceLang() {

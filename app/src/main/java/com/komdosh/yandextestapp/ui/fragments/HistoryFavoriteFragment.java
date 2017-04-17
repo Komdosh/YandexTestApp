@@ -106,7 +106,8 @@ public class HistoryFavoriteFragment extends Fragment {
 	}
 
 	public void updateItems() {
-		if (historyRecyclerViewAdapter != null && historyState.readAndClearNotifyState() == 1) {
+		if (historyRecyclerViewAdapter != null && historyState.isNotifyState()) {
+			historyState.resetNotifyState();
 			loadListOfItem();
 			historyRecyclerViewAdapter.notifyDataSetChanged();
 		}

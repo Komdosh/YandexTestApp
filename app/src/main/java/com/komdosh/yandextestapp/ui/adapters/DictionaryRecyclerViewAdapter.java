@@ -1,6 +1,6 @@
 package com.komdosh.yandextestapp.ui.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.komdosh.yandextestapp.App;
 import com.komdosh.yandextestapp.R;
 import com.komdosh.yandextestapp.data.dto.DefinitionDto;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * @author komdosh
@@ -21,14 +24,14 @@ import java.util.List;
 //Every item is from Dictionary API
 public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<DictionaryRecyclerViewAdapter.ViewHolder> {
 
-	private List<DefinitionDto> definitionDtos;
+	@Inject
+	Context appContext;
+	private List<DefinitionDto> definitionDtoList;
 
-	private Activity activity;
-
-	public DictionaryRecyclerViewAdapter(List<DefinitionDto> definitionDtos, Activity activity) {
+	public DictionaryRecyclerViewAdapter(List<DefinitionDto> definitionDtoList) {
 		super();
-		this.definitionDtos = definitionDtos;
-		this.activity = activity;
+		this.definitionDtoList = definitionDtoList;
+		App.getComponent().inject(this);
 	}
 
 	@Override
@@ -40,14 +43,14 @@ public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<Dictiona
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
-		if (definitionDtos == null || definitionDtos.get(position) == null) {
+		if (definitionDtoList == null || definitionDtoList.get(position) == null) {
 			return;
 		}
 
-		DefinitionDto definitionDto = definitionDtos.get(position);
+		DefinitionDto definitionDto = definitionDtoList.get(position);
 
 		holder.pos.setText(definitionDto.getPos());
-		holder.dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+		holder.dictionaryRecyclerView.setLayoutManager(new LinearLayoutManager(appContext));
 		DefOfSpeechRecyclerViewAdapter defOfSpeechRecyclerViewAdapter = new
 				DefOfSpeechRecyclerViewAdapter(definitionDto.getTr());
 		holder.dictionaryRecyclerView.setAdapter(defOfSpeechRecyclerViewAdapter);
@@ -55,16 +58,16 @@ public class DictionaryRecyclerViewAdapter extends RecyclerView.Adapter<Dictiona
 	}
 
 	public DefinitionDto getItem(int position) {
-		return definitionDtos.get(position);
+		return definitionDtoList.get(position);
 	}
 
 	@Override
 	public int getItemCount() {
-		if (definitionDtos == null) {
+		if (definitionDtoList == null) {
 			return 0;
 		}
 
-		return definitionDtos.size();
+		return definitionDtoList.size();
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
