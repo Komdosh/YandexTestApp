@@ -80,7 +80,7 @@ public class HistoryFavoriteFragment extends Fragment {
 				.queryBuilder()
 				.orderDesc(HistoryDao.Properties.Date);
 
-		//We can simplify the code below but it need if we want to expand functionality
+		//We can simplify the code below to if but it need if we want to expand functionality
 		if (getArguments() != null && getArguments().containsKey(TYPE_KEY)) {
 			switch (getArguments().getInt(TYPE_KEY)) {
 				case FAVORITE:
@@ -127,5 +127,7 @@ public class HistoryFavoriteFragment extends Fragment {
 	private void deleteItem(long id) {
 		daoSession.getHistoryDao().deleteByKey(id);
 		historyRecyclerViewAdapter.remove((int) id);
+		historyState.setNotifyState();
+		updateItems();
 	}
 }

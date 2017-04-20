@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.komdosh.yandextestapp.ui.fragments.TranslationFragment.TRANSLATION_FRAGMENT_ID;
+
 /**
  * @author komdosh
  *         created on 19.03.17.
@@ -137,8 +139,8 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 					if (mainActivityPager != null && histories != null && histories.get(getAdapterPosition()) != null) {
 						MainViewPagerFragmentAdapter adapter = (MainViewPagerFragmentAdapter) mainActivityPager.getAdapter();
 						TranslationFragment translationFragment = (TranslationFragment) adapter.getItemByClass(TranslationFragment.class);
-						mainActivityPager.setCurrentItem(0); // 0 - it is TranslationFragment
 						translationFragment.translateHistory(histories.get(getAdapterPosition()));
+						mainActivityPager.setCurrentItem(TRANSLATION_FRAGMENT_ID);
 					}
 				}
 			};

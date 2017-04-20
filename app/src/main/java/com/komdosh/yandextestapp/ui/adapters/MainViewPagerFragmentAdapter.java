@@ -2,7 +2,7 @@ package com.komdosh.yandextestapp.ui.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  *          created on 19.03.17.
  */
 
-public class MainViewPagerFragmentAdapter extends FragmentPagerAdapter {
+public class MainViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
 	private final List<Fragment> fragments = new ArrayList<>();
 
 	public MainViewPagerFragmentAdapter(FragmentManager manager) {
@@ -42,6 +42,10 @@ public class MainViewPagerFragmentAdapter extends FragmentPagerAdapter {
 
 	public void addFragment(Fragment fragment) {
 		fragments.add(fragment);
+	}
+
+	public void replaceFragment(int index, Fragment fragment) {
+		fragments.set(index, fragment);
 	}
 
 	@Override

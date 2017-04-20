@@ -1,8 +1,11 @@
 package com.komdosh.yandextestapp.ui.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +44,7 @@ import com.komdosh.yandextestapp.states.LangState;
 import com.komdosh.yandextestapp.ui.activities.ChooseLangActivity;
 import com.komdosh.yandextestapp.ui.activities.WordActivity;
 import com.komdosh.yandextestapp.ui.adapters.DictionaryRecyclerViewAdapter;
+import com.komdosh.yandextestapp.ui.adapters.MainViewPagerFragmentAdapter;
 import com.komdosh.yandextestapp.utils.CustomCache;
 import com.komdosh.yandextestapp.utils.CustomViewUtils;
 
@@ -70,7 +74,9 @@ public class TranslationFragment extends Fragment {
 
 	public static final int SOURCE_LANGUAGE_REQUEST = 1;
 	public static final int TARGET_LANGUAGE_REQUEST = 2;
+	public static final int TRANSLATION_FRAGMENT_ID = 0;
 	private static final String TAG = TranslationFragment.class.getSimpleName();
+
 
 	@BindView(R.id.sourceLang)
 	TextView sourceLang;
@@ -103,7 +109,7 @@ public class TranslationFragment extends Fragment {
 	RecyclerView dictionaryRecyclerView;
 
 	@BindViews({R.id.playTranslated, R.id.favoriteIcon, R.id.shareTranslate, R.id.fullScreenWord,
-			R.id.translatedText, R.id.dictionary, R.id.clearText, R.id.playEditText})
+			R.id.translatedText, R.id.clearText, R.id.playEditText})
 	List<View> translateControl;
 
 	@Inject
@@ -125,12 +131,14 @@ public class TranslationFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-
 		App.getComponent().inject(this);
 		View rootView = inflater.inflate(R.layout.fragment_translation, container, false);
 		ButterKnife.bind(this, rootView);
 
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+		updateAdapterForRotate();
+
 		cache = new CustomCache(daoSession);
 		cache.invalidateOld();
 
@@ -142,6 +150,13 @@ public class TranslationFragment extends Fragment {
 		setTextViewLangsFromState();
 		setupDictionaryRv();
 		return rootView;
+	}
+
+	//Replace TranslationFragment in ViewPager adapter on rotate
+	private void updateAdapterForRotate() {
+		ViewPager mainActivityPager = (ViewPager) getActivity().findViewById(R.id.mainActivityPager);
+		MainViewPagerFragmentAdapter adapter = (MainViewPagerFragmentAdapter) mainActivityPager.getAdapter();
+		adapter.replaceFragment(TRANSLATION_FRAGMENT_ID, this);
 	}
 
 	private void setupEditText() {
@@ -182,17 +197,23 @@ public class TranslationFragment extends Fragment {
 		}
 	}
 
-	public void translateHistory(History history) {
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
 		if (textToTranslate == null) {
-			textToTranslate = (EditText) getActivity().findViewById(R.id.textToTranslate);
+			Activity activity = (Activity) getContext();
+			textToTranslate = (EditText) activity.findViewById(R.id.textToTranslate);
 		}
-		this.history = history;
+	}
+
+	public void translateHistory(History history) {
+		clearText();
+
 		textToTranslate.setText(history.getText());
 
 		langState.setSourceLang(history.getSourceLang());
 		langState.setTargetLang(history.getTargetLang());
 		setTextViewLangsFromState();
-		translate();
 	}
 
 	@OnClick(R.id.fullScreenWord)
@@ -257,7 +278,7 @@ public class TranslationFragment extends Fragment {
 		if (localTextToTranslate.split(" ").length == 1) {
 			dictionary();
 		} else {
-			dictionaryDescription.setVisibility(View.VISIBLE);
+			dictionaryDescription.setVisibility(View.INVISIBLE);
 		}
 
 		CacheRequest cacheRequest = cache.getFromCache(localTextToTranslate);
